@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<!-- ---------------------------------------------------- -->
+<!-- ---------------------------------------------------- -->
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Air-o-Walk</title>
+
+	<link rel="stylesheet" href="css/map.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/style2.css">
+    <link rel="stylesheet" href="css/stylesheet.css">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+	
+	    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+
+	<style>
+        #map {
+            height: 500px;
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            z-index: 1;
+        }
+
+        .contact-map-container {
+            width: 100%;
+            height: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        /* Estilos para las listas de información */
+        #gas-text ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 15px;
+        }
+
+        #gas-text li {
+            background: #fff;
+            margin-bottom: 8px;
+            padding: 10px;
+            border-radius: 6px;
+            border-left: 4px solid #A8B870;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        #gas-text strong {
+            color: #4B4773;
+        }
+    </style>
+  
+</head>
+
+<!-- ---------------------------------------------------- -->
+<!-- ---------------------------------------------------- -->
+
+<body>
+  <!-- HEADER -->
+  <header class="main-header">
+    <div class="header-container">
+      <div class="logo">
+        <img src="https://sagucre.upv.edu.es/images/260/21639371/Diagramadesitioweb2-tzmgvOszHG8SDcflHZ0HZw.png"
+          alt="logo" />
+      </div>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="https://sagucre.upv.edu.es/dashboard/index.html" class="active">Dashboard</a></li>
+          <li><a href=https://sagucre.upv.edu.es/estado-nodos/estadoNodos.html >Nodos</a></li>
+          <li><a href="https://sagucre.upv.edu.es/usuarios/usuarios.html" >Usuarios</a></li>
+          <li><a href="https://sagucre.upv.edu.es/RecompensasAdmin/RecAdmin.html">Premios</a></li>
+          <li><a href="https://sagucre.upv.edu.es/incidencias/index.html">Incidencias</a></li>
+        </ul>
+      </nav>
+      <a href="#" class="logout"><u>Cerrar sesión &gt;</u></a>
+    </div>
+    <hr class="divider" />
+  </header>
+	<div class="ed-element ed-container wv-boxed wv-spacer" id="ed-1344552266">
+		<div class="inner">
+			<div class="ed-element ed-headline custom-theme" id="ed-1344552269">
+				<h1>Historico de mapas</h1>
+			</div>
+			<div class="ed-element ed-text custom-theme" id="ed-1344552272">
+				<p style="text-align: center;"></p>
+			</div>
+		</div>
+	</div>
+	<br>
+	<br>
+	<div class="container">
+	<div id="map"></div>
+
+        <div class="gas-tabs">
+            <button class="tab active" onclick="showLayer('AirQuality', this)">Calidad Aire</button>
+            <button class="tab" onclick="showLayer('O3', this)">O3</button>
+            <button class="tab" onclick="showLayer('CO', this)">CO</button>
+            <button class="tab" onclick="showLayer('NO2', this)">NO2</button>
+        </div>
+	
+	<h2>Mapas anteriores</h2>
+	<table>
+      <thead>
+        <tr>
+          <th>Mapa</th> 
+          <th>Fecha</th> 
+          <th>Nº de mediciones</th> 
+          <th>Descarga</th>
+        </tr>
+      </thead>
+      <tbody id="tabla-estados">
+		    <tr>
+    			<td>Entra ID mapa</td>
+    			<td>Entra fecha</td>
+    			<td>Entra numero de mediciones</td>
+				<td><button>Descarga</button></td>
+  			</tr>
+      </tbody>
+    </table>
+		</div>
+	<div class="ed-element ed-spacer" id="ed-1345951782">
+		<div class="space"></div>
+	</div>
+	
+	
+<!--FOOTER-->
+	<footer class="main-footer">
+    <div class="footer-logos">
+      <img src="https://sagucre.upv.edu.es/images/260/21639371/Diagramadesitioweb2-tzmgvOszHG8SDcflHZ0HZw.png"
+        alt=" Logo" class="footer-logo" />
+      <img src="https://sagucre.upv.edu.es/images/120/21601990/LogoGeneralitatValenciana-8bgziSb98SaymNPrT6-J0Q.png"
+        alt="Generalitat Valenciana" class="footer-logo" />
+    </div>
+    <p class="footer-text">
+      <a href="mailto:10f77c86c32f44f9a3b6d5c1c3156e@plesk.local">10f77c86c32f44f9a3b6d5c1c3156e@plesk.local</a> |
+      <a href="https://sagucre.upv.edu.es/legal-notice">Legal Notice</a> |
+      <a href="https://sagucre.upv.edu.es/privacy/">Privacy Policy</a>
+    </p>
+  </footer>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
+	
+	<script>
+
+        // --- 2. CONFIGURACIÓN DEL MAPA ---
+        const map = L.map('map').setView([38.970728230052366, -0.18001670497276576], 15);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        const layersPoints = { "CO": L.layerGroup(), "O3": L.layerGroup(), "NO2": L.layerGroup(), "AirQuality": L.layerGroup() };
+
+        const layersHeat = {
+            "CO": L.heatLayer([], { 
+                radius: 25, 
+                blur: 15, 
+                maxZoom: 17, 
+                gradient: { 0.0: "#00FF00", 0.4: "#FFFF00", 0.7: "#FFA500", 1.0: "#FF0000" } }),
+            "O3": L.heatLayer([], { 
+                radius: 25, 
+                blur: 15, 
+                maxZoom: 17, 
+                gradient: { 0.0: "#00FF00", 0.4: "#FFFF00", 0.7: "#FFA500", 1.0: "#FF0000" } }),
+            "NO2": L.heatLayer([], { 
+                radius: 25, 
+                blur: 15, 
+                maxZoom: 17, 
+                gradient: { 0.0: "#00FF00", 0.4: "#FFFF00", 0.7: "#FFA500", 1.0: "#FF0000" } }),
+            "AirQuality": L.heatLayer([], { 
+                radius: 25, 
+                scaleRadius: true, 
+                blur: 10, 
+                maxZoom: 17, 
+                gradient: { 0.0: "#00FF00", 0.6: "#00FF00", 0.7: "#FFA500", 1.0: "#FF0000" } })
+        };
+
+        const gasColors = { "co": "#FF4136", "o3": "#0074D9", "no2": "#2ECC40" };
+
+        function normalize(value, maxExpected) { return Math.min(1, value / maxExpected); }
+
+        function getColorByQuality(value) {
+            if (value < 0.4) return "#00FF00";
+            else if (value < 0.7) return "#FFFF00";
+            else if (value < 0.9) return "#FFA500";
+            else return "#FF0000";
+        }
+
+        function calidadAireTexto(valor) {
+            if (valor < 0.4) return "Buena";
+            else if (valor < 0.7) return "Moderada";
+            else if (valor < 0.9) return "Mala";
+            else return "Muy Mala";
+        }
+
+        // --- 3. FUNCIÓN PRINCIPAL: CAMBIAR CAPA Y TEXTO ---
+        function showLayer(type, btnElement) {
+            // A. Cambiar Mapa
+            Object.values(layersPoints).forEach(layer => map.removeLayer(layer));
+            Object.values(layersHeat).forEach(layer => map.removeLayer(layer));
+
+            //layersPoints[type].addTo(map);
+            layersHeat[type].addTo(map);
+
+            // B. Actualizar Botones
+            if (btnElement) {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                btnElement.classList.add('active');
+            }
+
+            // C. ACTUALIZAR TEXTO DE INFORMACIÓN
+            const info = gasInfoData[type];
+            if (info) {
+                document.getElementById('gas-title').textContent = info.title;
+                document.getElementById('gas-text').innerHTML = info.text;
+            }
+        }
+
+        // --- 4. CARGAR DATOS API ---
+        fetch('https://api.sagucre.upv.edu.es/measurements')
+            .then(response => response.json())
+            .then(data => {
+                const measurements = data.measurements;
+
+                for (let i = 0; i < measurements.length; i++) {
+                    const d = measurements[i];
+
+                    // CO
+                    if (d.co_value != null) {
+                        const coMarker = L.circleMarker([d.latitude, d.longitude], { radius: 4, fillColor: gasColors.co, color: '#222', weight: 1, fillOpacity: 0.9 })
+                            .bindPopup(`<b>CO</b>: ${d.co_value} ppm<br>Node: ${d.node_id}`);
+                        layersPoints.CO.addLayer(coMarker);
+                        layersHeat.CO.addLatLng([d.latitude, d.longitude, normalize(d.co_value, 2)]);
+                    }
+                    // O3
+                    if (d.o3_value != null) {
+                        const o3Marker = L.circleMarker([d.latitude, d.longitude], { radius: 4, fillColor: gasColors.o3, color: '#222', weight: 1, fillOpacity: 0.9 })
+                            .bindPopup(`<b>O3</b>: ${d.o3_value} µg/m³<br>Node: ${d.node_id}`);
+                        layersPoints.O3.addLayer(o3Marker);
+                        layersHeat.O3.addLatLng([d.latitude, d.longitude, normalize(d.o3_value, 100)]);
+                    }
+                    // NO2
+                    if (d.no2_value != null) {
+                        const no2Marker = L.circleMarker([d.latitude, d.longitude], { radius: 4, fillColor: gasColors.no2, color: '#222', weight: 1, fillOpacity: 0.9 })
+                            .bindPopup(`<b>NO2</b>: ${d.no2_value} µg/m³<br>Node: ${d.node_id}`);
+                        layersPoints.NO2.addLayer(no2Marker);
+                        layersHeat.NO2.addLatLng([d.latitude, d.longitude, normalize(d.no2_value, 100)]);
+                    }
+
+                    // CALIDAD AIRE GLOBAL
+                    const coNorm = d.co_value != null ? normalize(d.co_value, 2) : 0;
+                    const o3Norm = d.o3_value != null ? normalize(d.o3_value, 100) : 0;
+                    const no2Norm = d.no2_value != null ? normalize(d.no2_value, 100) : 0;
+                    let maxNorm = Math.max(coNorm, o3Norm, no2Norm);
+
+                    let maxNormMarker = L.circleMarker([d.latitude, d.longitude], { radius: 6, fillColor: getColorByQuality(maxNorm), color: '#fff', weight: 1, fillOpacity: 0.8 })
+                        .bindPopup(`<b>Calidad del Aire</b>: ${calidadAireTexto(maxNorm)}<br>Node: ${d.node_id}`);
+                    layersPoints.AirQuality.addLayer(maxNormMarker);
+
+                    if (maxNorm > 0) {
+                        layersHeat.AirQuality.addLatLng([d.latitude, d.longitude, maxNorm]);
+                    }
+                }
+
+                // Cargar por defecto
+                showLayer("AirQuality");
+            })
+            .catch(err => console.error('Error API:', err));
+    </script>
+	
+  <script src="../logout/popup-logout.js" defer></script>
+  <script src="/js/sitejetJS.js" defer></script>
+</body>
+
+</html>

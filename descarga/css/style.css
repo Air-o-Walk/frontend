@@ -1,0 +1,217 @@
+/* ------------------------------------------------------ */
+/*   ESTILO GENERAL (matching con la web principal)       */
+/* ------------------------------------------------------ */
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #FDF8E2;   /* crema */
+    color: #1E1E1E;
+}
+
+/* ---------------------- TITULO ------------------------ */
+
+h1 {
+    text-align: center;
+    font-size: 42px;
+    color: #F1642E;  /* naranja Air-o-Walk */
+    margin-bottom: 40px;
+}
+
+/* ---------------------- BOTONES ------------------------ */
+
+.botonera {
+    display: flex;
+    justify-content: center;  /* centra horizontalmente */
+    align-items: center;      /* alinea verticalmente en la fila */
+}
+
+
+button {
+    background-color: #504E76;   
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 16px;
+    margin: 0 6px 30px 6px;
+    cursor: pointer;
+    transition: 0.15s ease-in-out;
+}
+
+button:hover {
+     background-color: #7e67b6;
+}
+
+/* ---------------------- TABLA -------------------------- */
+
+table {
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+}
+
+table thead {
+    background-color: #A7C575;
+    color: #EFEFEF;
+}
+
+table th {
+    padding: 16px;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+}
+
+table tbody tr {
+    transition: 0.2s;
+}
+
+table tbody tr:hover {
+    background-color: #F1EDDE; /* crema suave para hover */
+}
+
+table td {
+    padding: 14px;
+    font-size: 16px;
+    text-align: center;
+    border-bottom: 1px solid #DDD;
+}
+
+/* ---------------------- RESPONSIVE ------------------------ */
+
+@media (max-width: 800px) {
+    table {
+        width: 95%;
+    }
+
+    h1 {
+        font-size: 34px;
+    }
+
+    button {
+        margin-bottom: 20px;
+    }
+}
+
+/* HEADER */
+.main-header {
+  position: relative;
+  background: #F7F3E7;
+}
+
+
+/* Contenedor principal */
+.header-container {
+  display: flex;
+  align-items: flex-end; /* Alinea las pestañas en la parte inferior */
+  justify-content: space-between;
+  padding: 15px 40px 0 40px; /* Dejamos espacio arriba, no abajo */
+  flex-wrap: wrap;
+}
+
+.logo {
+  align-self: flex-start; /* Lo alinea arriba en el flex container */
+  position: relative;
+  top: -8px; /* Lo sube más arriba del nivel de las pestañas */
+  margin-bottom: 0;
+}
+/* Logo */
+.logo img {
+  width: 120px;
+}
+
+.main-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 0; /* Sin espacio entre botones */
+}
+
+/* Botones tipo pestaña */
+.main-nav a {
+  text-decoration: none;
+  color: #fff;
+  background: #a8b56f; /* Verde */
+  padding: 25px 40px;
+  border-radius: 20px 20px 0 0;
+   font-size: 18px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: inline-block;
+  position: relative;
+}
+
+/* Hover */
+.main-nav a:hover {
+   background-color: #f1462e;   
+}
+
+/* Activo — color morado y unido al divider */
+.main-nav a.active {
+   background-color: #f1462e;   
+  color: #fff;
+  bottom: 0;
+}
+
+.logout {
+  color: #504e76;
+  font-weight: bold;
+  text-decoration: none;
+  transition: color 0.2s;
+  align-self: flex-start; /* Lo lleva arriba dentro del flex */
+  position: relative;
+}
+
+.logout:hover {
+  color: #f1462e;
+}
+
+/* Divider verde inferior */
+.divider {
+  width: 100%;
+  height: 50px;
+  background: #a8b56f;
+  border: none;
+  margin: 0;
+}
+
+/* FOOTER */
+.main-footer {
+  background-color: #504e76;
+  padding: 50px 20px;
+  text-align: center;
+  border-top: 2px solid #ddd;
+}
+
+.footer-logos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+  margin-bottom: 15px;
+}
+
+.footer-logo {
+  max-height: 80px;
+}
+
+.footer-text {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #ddd;
+}
+
+.footer-text a {
+  color: #ddd;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-text a:hover {
+  color: #f1642e;
+}

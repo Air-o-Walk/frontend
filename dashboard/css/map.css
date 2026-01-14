@@ -1,0 +1,108 @@
+
+.section-map {
+    text-align: center;
+    padding: 80px 0;
+}
+
+.map-title {
+    font-size: 44px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: #E37A4A; /* naranja del HiFi */
+}
+
+
+.map-sub {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 40px;
+}
+
+.map-img {
+    width: 50%;
+    max-width: 650px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+}
+
+
+/* Tabs (O3 / CO / NO2 / SO2) */
+.gas-tabs {
+    margin-top: 10px;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.tab {
+    padding: 6px 22px;
+    border: none;
+    border-radius: 40px;
+    background-color: #B9C98F;   /* INACTIVO */
+    color: #000;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    transition: 0.15s ease-in-out;
+}
+
+.tab.active {
+    background-color: #A7C575;   /* ACTIVO */
+    font-weight: 700;            /* más bold */
+}
+
+
+/* Text section */
+.gas-info {
+    width: 60%;
+    margin: auto;
+    text-align: left;
+}
+
+.gas-info h3 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #CC441A; /* rojo/naranja del HiFi */
+    margin-bottom: 20px;
+}
+
+.gas-info p {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #222;
+    margin-bottom: 30px;
+}
+
+.map-btn {
+    padding: 12px 30px;
+    border-radius: 16px;
+    font-size: 18px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .map-img {
+        width: 90%;
+    }
+
+    .gas-info {
+        width: 80%;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .map-img {
+        width: 95%;
+    }
+
+    .gas-info {
+        width: 90%;
+    }
+
+    .tab {
+        padding: 6px 14px;
+        font-size: 14px;
+    }
+}

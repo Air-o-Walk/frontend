@@ -1,0 +1,1219 @@
+/* ======================================================
+   RESET BÁSICO
+   ====================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #F7F3E7; /* color crema */
+}
+
+
+
+/* ======================================================
+   NAVBAR (Sticky + Responsive)
+   ====================================================== */
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+
+
+
+    padding: 10px 64px;
+    background-color: #504E76;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+/* ----- LOGO CIRCULAR ----- */
+.nav-left {
+    display: flex;
+    align-items: center;
+}
+
+.logo-circle {
+    height: 72px; /* igual HiFi */
+    width: auto;
+}
+
+/* ----- LINKS CENTRALES ----- */
+.nav-links {
+    display: flex;
+    gap: 48px;
+    flex: 1;
+    justify-content: center;
+}
+
+.nav-links a {
+    text-decoration: none;
+    font-size: 18px;
+    color: #F5F5F5;
+    font-weight: 400;
+    transition: 0.2s ease;
+}
+
+.nav-links a:hover {
+    opacity: 0.8;
+}
+
+/* ----- BOTÓN + LOGIN ----- */
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.btn-signup {
+    background-color: #A7C575;
+    border: none;
+    padding: 10px 26px;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #2E2E2E;
+    transition: 0.2s ease;
+    white-space: nowrap;
+}
+
+.btn-signup:hover {
+    filter: brightness(0.95);
+}
+
+.login {
+    color: #E07B4C;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+
+
+/* ======================================================
+   RESPONSIVE NAVBAR
+   ====================================================== */
+
+/* Tablets */
+@media (max-width: 900px) {
+    .navbar {
+        padding: 10px 24px;
+        gap: 20px;
+    }
+
+    .nav-links {
+        gap: 24px;
+    }
+
+    .logo-circle {
+        height: 60px;
+    }
+}
+
+/* Móviles */
+@media (max-width: 700px) {
+    .navbar {
+        padding: 10px 16px;
+    }
+
+    .nav-links {
+        display: none; /* si quieres luego hacemos menú hamburguesa */
+    }
+
+    .logo-circle {
+        height: 52px;
+    }
+
+    .nav-right {
+        gap: 12px;
+    }
+
+    .btn-signup {
+        padding: 8px 18px;
+        font-size: 14px;
+    }
+
+    .login {
+        font-size: 14px;
+    }
+}
+
+/* ======================================================
+   HERO SECTION
+   ====================================================== */
+
+.hero {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* pantalla completa */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.65); /* oscurecer como en el HiFi */
+    z-index: 1;
+}
+
+
+
+.hero-content {
+    position: relative;
+    z-index: 2; /* por encima de la imagen */
+    text-align: center;
+    color: white;
+}
+
+.hero-content h1 span {
+    background: linear-gradient(90deg, #A7C575, #CFE3A1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+}
+
+
+.hero-content h1 {
+    font-size: 64px;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -1px; 
+    margin-bottom: 28px;
+}
+
+
+.hero-content p {
+    font-size: 20px;
+    font-weight: 400;
+    max-width: 640px;
+    margin: 0 auto 32px;
+    line-height: 1.6;
+    opacity: 0.9;
+}
+
+
+/* Botón del hero */
+.btn-hero {
+    background-color: #A7C575;
+    color: #2E2E2E;
+    padding: 14px 36px;
+    border-radius: 16px;
+    border: none;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+
+
+
+.btn-hero:hover {
+    filter: brightness(0.93);
+}
+
+
+
+
+/* ======================================================
+   HERO RESPONSIVE
+   ====================================================== */
+
+@media (max-width: 900px) {
+    .hero {
+        height: 60vh;
+    }
+
+    .hero-content h1 {
+        font-size: 42px;
+    }
+
+    .hero-content p {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .hero {
+        height: 55vh;
+    }
+
+    .hero-content h1 {
+        font-size: 34px;
+    }
+
+    .hero-content p {
+        font-size: 18px;
+    }
+
+    .btn-hero {
+        font-size: 18px;
+        padding: 12px 28px;
+    }
+}
+
+/* ======================================================
+   SECTION MAP
+   ====================================================== */
+
+.section-map {
+    text-align: center;
+    padding: 80px 0;
+}
+
+.map-layout {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.map-column {
+    flex: 1;
+    min-width: 0;  /* para que respete el ancho */
+}
+
+.map-title {
+	margin-bottom: 10px; 
+    font-size: 38px;
+    font-weight: 700;
+    color: #E37A4A; /* naranja del HiFi */
+}
+
+
+.map-sub {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 40px;
+}
+
+.map-img {
+    width: 50%;
+    max-width: 650px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+}
+
+/* Tabs (O3 / CO / NO2 / SO2) */
+.gas-tabs {
+    margin-top: 10px;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.tab {
+    padding: 6px 22px;
+    border: none;
+    border-radius: 40px;
+    background-color: #B9C98F;   /* INACTIVO */
+    color: #000;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    transition: 0.15s ease-in-out;
+}
+
+.tab.active {
+    background-color: #A7C575;   /* ACTIVO */
+    font-weight: 700;            /* más bold */
+}
+
+
+/* Text section */
+.gas-info {
+    flex: 0 0 420px;  /* ancho fijo para el texto */
+    text-align: justify;
+}
+
+.gas-info h3 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #CC441A; /* rojo/naranja del HiFi */
+    margin-bottom: 20px;
+}
+
+.gas-info p {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #222;
+    margin-bottom: 30px;
+}
+
+.map-btn {
+    padding: 12px 30px;
+    border-radius: 16px;
+    font-size: 18px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+ .map-layout {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .map-column,
+    .gas-info {
+        width: 100%;
+        max-width: 600px;
+    }
+
+    .map-img {
+        width: 90%;
+    }
+
+    .gas-info {
+        width: 80%;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .map-img {
+        width: 95%;
+    }
+
+    .gas-info {
+        width: 90%;
+    }
+
+    .tab {
+        padding: 6px 14px;
+        font-size: 14px;
+    }
+}
+
+/* ===========================
+      PRODUCTO SECTION
+   =========================== */
+
+.section-producto {
+    padding: 100px 0;
+}
+
+.producto-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 80px;
+    width: 90%;
+    margin: auto;
+}
+
+.producto-lamp {
+    width: 350px;
+    height: auto;
+    flex-shrink: 0;
+}
+
+.producto-content {
+    width: 60%;
+}
+
+.center {
+    text-align: center;
+}
+
+.producto-desc {
+    max-width: 620px;
+    margin: 20px auto 60px;
+    line-height: 1.7;
+    font-size: 18px;
+    color: #333;
+}
+
+/* GRID vertical (iconos arriba del texto) */
+.producto-grid {
+	display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px; 
+    max-width: 800px; /* Al ser solo 2 elementos, un ancho menor los mantiene juntos */
+    margin: 20px auto; /* Reduce el margen superior e inferior */
+    padding: 0 20px;
+}
+
+.feature-v {
+    text-align: center;
+    max-width: 330px;
+    margin: auto;
+}
+
+/* Icono circular */
+.circle-icon {
+    width: 85px;
+    height: 85px;
+    background-color: #B9C98F;
+    border-radius: 50%;
+    margin: 0 auto 18px;
+}
+
+/* título */
+.feature-v h4 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #222;
+}
+
+/* párrafo */
+.feature-v p {
+    font-size: 15px;
+    line-height: 1.5;
+    color: #444;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+
+    .producto-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .producto-content {
+        width: 100%;
+    }
+
+    .producto-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .producto-lamp {
+        width: 260px;
+    }
+}
+
+.orange {
+    color: #E87B4C;   /* El naranja exacto del HiFi */
+}
+
+/* ============================
+   SOBRE NOSOTROS
+=============================== */
+
+.section-nosotros {
+    text-align: center;
+    padding: 100px 0;
+}
+
+.section-nosotros .section-title {
+    margin-bottom: 10px; 
+    font-size: 38px;
+    color: #E37A4A; /* naranja del HiFi */
+}
+
+.nosotros-desc {
+    width: 70%;
+    margin: 0 auto 60px auto;
+    font-size: 18px;
+    color: #333;
+    line-height: 1.7;
+}
+
+/* GRID DE 3 ARRIBA + 2 ABAJO EXACTO */
+.nosotros-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    justify-items: center;
+    margin-top: 40px;
+}
+
+/* Hacer que SOLO la segunda fila esté centrada */
+.nosotros-grid > div:nth-child(4),
+.nosotros-grid > div:nth-child(5) {
+    grid-column: span 1;
+    justify-self: center; /* centra cada tarjeta */
+}
+
+
+/* Tarjetas */
+.nosotros-card {
+    background-color: #CBCBF3; /* lavanda del HiFi */
+    padding: 35px 25px;
+    border-radius: 30px;
+    width: 260px;
+    min-height: 220px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+}
+
+/* Círculo verde */
+.icon-circle {
+    width: 56px;
+    height: 56px;
+    background-color: #C7D99A; /* verde claro del HiFi */
+    border-radius: 50%;
+}
+
+/* Texto */
+.nosotros-card p {
+    font-size: 18px;
+    color: #1D1D1D;
+    line-height: 1.5;
+    font-weight: 500;
+    text-align: center;
+}
+
+/* CTA final */
+.nosotros-cta {
+    margin-top: 20px;
+}
+
+.nosotros-cta p {
+    margin-bottom: 14px;
+    font-size: 18px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .nosotros-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .nosotros-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .nosotros-card {
+        width: 80%;
+    }
+}
+
+/* ============================
+      CONTACTO SECTION
+=============================== */
+
+.contact-section {
+    background-color: #504E76; /* azul oscuro del HiFi */
+    padding: 80px 0 40px;
+    color: white; /* texto blanco */
+}
+
+.contact-wrapper {
+    width: 85%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+}
+
+/* LEFT SIDE */
+.contact-left {
+    width: 45%;
+}
+
+.contact-title {
+    font-size: 48px;
+    color: #E37A4A !important; /* naranja exacto del HiFi */
+    margin-bottom: 20px;
+}
+
+.contact-phone {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.contact-text {
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: white;
+}
+
+.contact-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 40px;
+}
+
+.contact-list li {
+    font-size: 18px;
+    margin-bottom: 6px;
+    color: white;
+}
+
+.contact-ayto {
+    width: 200px;
+    margin-top: 20px;
+}
+
+
+/* RIGHT SIDE */
+.contact-right {
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+}
+
+.map-label {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.contact-map {
+    width: 100%;
+    height: 260px;
+    background-color: #D9D9D9;
+    border-radius: 18px;
+    border: 3px solid #C5C5C5;
+}
+
+
+/* ============================
+      FOOTER BOTTOM
+=============================== */
+
+.footer-bottom {
+    margin-top: 60px;
+    border-top: 2px solid rgba(255,255,255,0.3);
+    padding-top: 30px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+
+    color: white;
+}
+
+.footer-logo {
+    width: 80px;
+}
+
+.footer-links {
+    display: flex;
+    gap: 30px;
+}
+
+.footer-links a {
+    color: white;        /* EN BLANCO */
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.btn-download {
+    background-color: #A7C575; /* verde suave */
+    color: #2E2E2E;
+    padding: 12px 30px;
+    font-size: 16px;
+    border-radius: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+
+    .contact-wrapper {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .contact-left,
+    .contact-right {
+        width: 100%;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+}
+
+#gas-text ul {
+    list-style: none; /* Quita los puntos por defecto feos */
+    padding: 0;
+    margin-top: 10px;
+}
+
+#gas-text li {
+    background-color: #f4f4f4; /* Fondo gris suave para cada punto */
+    margin-bottom: 8px;
+    padding: 10px;
+    border-radius: 6px;
+    border-left: 4px solid #A8B870; /* Borde verde decorativo a la izquierda */
+    font-size: 0.95em;
+    line-height: 1.4;
+}
+
+#gas-text strong {
+    color: #4B4773; /* Color morado para los encabezados de línea */
+}
+
+#gas-text p {
+    margin-bottom: 15px;
+    font-style: italic;
+    color: #555;
+}
+
+/* ================= ESTILOS NUEVOS PARA ICONOS ================= */
+
+/* 1. Estilo base del icono */
+.icon-feature {
+    font-size: 3rem;       /* Tamaño grande (aprox 48px) */
+    color: #A8B870;        /* Tu color verde corporativo */
+    margin-bottom: 20px;   /* Espacio debajo del icono */
+    display: block;        /* Para que ocupe su propia línea */
+    transition: all 0.3s ease; /* Suaviza la animación */
+}
+
+/* 2. Efecto al pasar el ratón por encima (Hover) */
+.nosotros-card:hover .icon-feature {
+    transform: scale(1.15); /* Crece un 15% */
+    color: #E27B58;          /* Cambia a naranja (opcional) */
+}
+
+/* 3. Asegurar que las tarjetas centren los iconos */
+.nosotros-card {
+    display: flex;
+    flex-direction: column; /* Apila icono sobre texto */
+    align-items: center;    /* Centra horizontalmente */
+    text-align: center;      /* Centra el texto */
+    padding: 20px;
+}
+
+
+/* --- Sección Beneficios --- */
+.beneficios-container {
+   padding: 40px 0; 
+    text-align: center;
+    background-color: #fdfcf9;
+}
+
+.beneficios-container .section-title {
+   margin-bottom: 10px; 
+    font-size: 38px;
+    color: #E37A4A; /* naranja del HiFi */     
+}
+
+/* Grid de los 2 beneficios principales */
+.section-producto .producto-grid {
+   display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px; 
+    max-width: 800px;
+    margin: 10px auto; 
+    padding: 0 20px;
+
+}
+
+/* Estilo de los Pasos 1, 2, 3 */
+.como-funciona-section {
+   padding-top: 30px; 
+    border-top: 1px solid rgba(0,0,0,0.08);
+}
+.como-funciona-title {
+    font-size: 28px;
+    color: #4B4773;
+    margin-bottom: 20px; 
+    font-weight: 700;
+    text-align: center;
+}
+
+.pasos-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+
+.paso-card {
+    flex: 1;
+    min-width: 250px;
+    max-width: 320px;
+    text-align: center;
+}
+
+.paso-number {
+    background-color: #A7C575;
+    color: white;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 auto 20px;
+    box-shadow: 0 4px 15px rgba(167, 197, 117, 0.3);
+}
+
+.paso-card p strong {
+    color: #4B4773;
+    display: block;
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+
+.section-alianzas {
+    padding: 0px 0 20px 0;
+}
+
+.section-alianzas .section-title {
+    font-size: 38px;      
+    margin-bottom: 10px;  
+	margin-top: 10;
+    color: #E87B4C;      
+}
+.alianzas-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.alianzas-desc {
+    max-width: 800px;
+	margin: 5px auto 30px auto;
+    font-size: 18px;
+    color: #666;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.ayto-grid {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.ayto-card {
+    background: #fdfcf9;
+    padding: 40px 25px;
+    border-radius: 15px;
+    width: 320px;
+    text-align: center;
+    border: 1px solid #eee;
+    transition: all 0.3s ease;
+}
+
+.ayto-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.ayto-logo-box {
+    height: 70px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ayto-logo-box img {
+    max-height: 100%;
+    max-width: 90%;
+}
+
+.icon-alianza {
+    font-size: 48px;
+    color: #A7C575;
+}
+
+.ayto-card h4 {
+    color: #4B4773;
+    margin-bottom: 12px;
+    font-size: 20px;
+}
+
+.ayto-card p {
+    font-size: 15px;
+    color: #777;
+    margin-bottom: 25px;
+    line-height: 1.4;
+}
+
+.btn-link {
+    color: #E87B4C;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.btn-link:hover {
+    text-decoration: underline;
+}
+.search-box {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.search-box input {
+    padding: 12px 20px;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 25px;
+    border: 2px solid #A7C575;
+    font-size: 16px;
+    outline: none;
+}
+
+.card-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn-contact {
+    background: #4B4773;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 13px;
+    transition: 0.3s;
+}
+
+.btn-contact:hover {
+    background: #E87B4C;
+}
+.hidden-initially {
+    display: none;
+}
+
+.section-nosotros {
+    padding: 100px 0;
+    background-color: #fdfcf9; /* Tono crema muy suave para diferenciar */
+}
+
+.nosotros-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.nosotros-header {
+    margin-bottom: 60px;
+}
+
+.nosotros-meta {
+    max-width: 800px;
+    margin: 20px auto 0;
+    font-size: 19px;
+    line-height: 1.6;
+    color: #4B4773;
+}
+
+.metas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.meta-card {
+    background: #ffffff;
+    padding: 40px 30px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    transition: transform 0.3s ease;
+    border-bottom: 4px solid #A7C575;
+}
+
+.meta-card:hover {
+    transform: translateY(-5px);
+}
+
+.meta-icon {
+    font-size: 40px;
+    color: #A7C575;
+    margin-bottom: 20px;
+}
+
+.meta-card h4 {
+    color: #4B4773;
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.meta-card p {
+    color: #666;
+    line-height: 1.5;
+}
+
+.nosotros-trust {
+    margin-top: 60px;
+    text-align: center;
+    font-weight: 600;
+    color: #E87B4C;
+    font-size: 18px;
+}
+
+.contact-section {
+    background-color: #1a1a2e; /* Un azul marino muy oscuro y elegante */
+    color: #ffffff;
+    padding: 80px 0 0;
+    font-family: 'Inter', sans-serif;
+}
+
+.contact-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 60px;
+}
+
+.footer-logo-main {
+    height: 50px;
+    margin-bottom: 20px;
+}
+
+.brand-mission {
+    color: #a0a0b0;
+    line-height: 1.6;
+    font-size: 15px;
+    max-width: 300px;
+}
+
+.footer-heading {
+    font-size: 18px;
+    color: #504E76;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.contact-methods .method {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+    color: #e0e0e0;
+    font-size: 15px;
+}
+
+.contact-methods i {
+    color: #A7C575;
+    font-size: 18px;
+}
+
+.partner-logo {
+    max-width: 180px;
+    filter: brightness(0) invert(1); /* Logo en blanco para fondo oscuro */
+    opacity: 0.8;
+}
+
+.footer-legal {
+    background-color: #121221;
+    padding: 25px 0;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.legal-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: #6a6a8a;
+}
+
+.legal-links a {
+    color: #6a6a8a;
+    text-decoration: none;
+    margin-left: 20px;
+    transition: color 0.3s;
+}
+
+.legal-links a:hover {
+    color: #A7C575;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .contact-wrapper {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 40px;
+    }
+    .brand-mission {
+        margin: 0 auto;
+    }
+    .contact-methods .method {
+        justify-content: center;
+    }
+    .legal-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+
+.aqi-info {
+  max-width: 1000px;
+  margin: 40px auto 0;
+  padding: 30px;
+  background-color: #fdfcf9;
+  border-radius: 16px;
+  text-align: left;
+}
+
+.aqi-info h3 {
+  color: #E37A4A;
+  font-size: 26px;
+  margin-bottom: 15px;
+}
+
+.aqi-info p {
+  color: #333;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.aqi-info ul {
+  list-style: none;
+  padding: 0;
+}
+
+.aqi-info li {
+  margin-bottom: 10px;
+}

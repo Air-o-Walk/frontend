@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Air-o-Walk | Incidencias</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+<header class="main-header">
+  <div class="header-container">
+    <div class="logo">
+      <img src="https://sagucre.upv.edu.es/images/260/21639371/Diagramadesitioweb2-tzmgvOszHG8SDcflHZ0HZw.png" alt="logo" />
+    </div>
+
+    <nav class="main-nav">
+      <ul>
+        <li><a href="https://sagucre.upv.edu.es/dashboard/index.html">Dashboard</a></li>
+        <li><a href="https://sagucre.upv.edu.es/estado-nodos/estadoNodos.html">Nodos</a></li>
+        <li><a href="https://sagucre.upv.edu.es/usuarios/usuarios.html">Usuarios</a></li>
+        <li><a href="https://sagucre.upv.edu.es/RecompensasAdmin/RecAdmin.html">Premios</a></li>
+        <li><a href="https://sagucre.upv.edu.es/incidencias/index.html" class="active">Incidencias</a></li>
+      </ul>
+    </nav>
+
+    <a href="#" class="logout"><u>Cerrar sesión &gt;</u></a>
+  </div>
+  <hr class="divider" />
+</header>
+
+<!-- ================= MAIN CONTENT ================= -->
+<main class="page-content">
+
+  <!-- TITLE -->
+  <div class="ed-element ed-container wv-boxed wv-spacer">
+    <div class="inner">
+      <div class="ed-element ed-headline custom-theme">
+        <h1>Incidencias</h1>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILTERS -->
+  <section class="incidents-section">
+
+    <div class="incident-filters">
+      <button class="filter-btn active" data-status="todas">Todas</button>
+      <button class="filter-btn" data-status="recibida">Recibidas</button>
+      <button class="filter-btn" data-status="en proceso">En proceso</button>
+      <button class="filter-btn" data-status="resuelta">Resueltas</button>
+      <button class="filter-btn" data-status="rechazada">Rechazadas</button>
+    </div>
+
+    <!-- INCIDENT LIST -->
+    <div id="incidencias-container">
+      <!-- JS injects cards OR empty state here -->
+    </div>
+
+  </section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="main-footer">
+  <div class="footer-logos">
+    <img src="https://sagucre.upv.edu.es/images/260/21639371/Diagramadesitioweb2-tzmgvOszHG8SDcflHZ0HZw.png" class="footer-logo" />
+    <img src="https://sagucre.upv.edu.es/images/120/21601990/LogoGeneralitatValenciana-8bgziSb98SaymNPrT6-J0Q.png" class="footer-logo" />
+  </div>
+
+  <p class="footer-text">
+    <a href="mailto:10f77c86c32f44f9a3b6d5c1c3156e@plesk.local">Contacto</a> |
+    <a href="https://sagucre.upv.edu.es/legal-notice">Legal Notice</a> |
+    <a href="https://sagucre.upv.edu.es/privacy/">Privacy Policy</a>
+  </p>
+</footer>
+
+<!-- ================= SCRIPTS ================= -->
+<script src="../logout/popup-logout.js" defer></script>
+<script src="https://sagucre.upv.edu.es/incidencias/js/logicaIncidencias.js"></script>
+
+</body>
+</html>

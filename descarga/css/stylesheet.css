@@ -1,0 +1,280 @@
+/* === RESET Y BASE === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #fdf8e2;
+  color: #222;
+  line-height: 1.6;
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+/* === HEADER === */
+.header {
+  background-color: #504e76;
+  padding: 20px;
+  height: 75px;
+  display: flex;
+  align-items: center;
+}
+
+.back-button {
+  background: transparent;
+  color: #f1642e;
+  border: none;
+  padding: 10px 20px;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+.back-button:hover,
+.back-button:focus {
+  color: #fdf8e2;
+}
+
+/* === CONTENEDOR PRINCIPAL === */
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 30px 15px;
+}
+
+.qr-download-section {
+  text-align: center;
+  padding: 40px 20px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.qr-download-section h2 {
+  margin-bottom: 10px;
+  font-size: 1.8rem;
+}
+
+.qr-download-section p {
+  margin-bottom: 10px;
+  opacity: 0.9;
+}
+
+.qr-placeholder {
+  background: white;
+  padding: 10px;
+  border-radius: 15px;
+  display: inline-block;
+  margin: 20px auto;
+}
+
+.qr-placeholder img {
+  width: 180px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+
+/* === INSTRUCCIONES === */
+.instructions-easy {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  padding: 24px;
+  margin-bottom: 40px;
+}
+
+.instructions-easy h3 {
+  color: #f1642e;
+  font-size: 22px;
+  margin-bottom: 14px;
+}
+
+.instructions-easy p {
+  color: #333;
+  font-size: 15px;
+}
+
+.easy-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.step {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.step-number {
+  min-width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #f1642e;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.step-text {
+  flex: 1;
+}
+
+.step-text strong {
+  color: #504e76;
+  font-size: 16px;
+  font-weight: 700;
+  display: inline; /* Evita el salto de línea */
+}
+
+/* === FIGURAS CON IMÁGENES === */
+figure.image-placeholder {
+  background: #f7f7f7;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 14px auto;      /* centrado */
+  text-align: center;
+  display: block;         /* bloque centrado */
+  width: fit-content;     /* se adapta a la imagen */
+}
+
+figure.image-placeholder img {
+  width: 40%;           /* tu tamaño anterior */
+  height: auto;         /* CAMBIO IMPORTANTE: reemplaza height: 25% */
+  border-radius: 6px;
+  display: block;       /* elimina espacios y ayuda al centrado */
+  margin: 0 auto;       /* centrado extra de la imagen */
+}
+
+
+figure.image-placeholder figcaption {
+  font-size: 13px;
+  color: #666;
+  margin-top: 6px;
+  font-style: italic;
+}
+
+/* === HOW TO / RESTO DE SECCIONES === */
+.how-to,
+.text-block,
+.faq-section {
+  background: transparent; /* No fondo blanco */
+  box-shadow: none;
+  padding: 0;
+  border-radius: 0;
+}
+
+.how-to h3,
+.text-block h3,
+.faq-section h3 {
+  color: #504e76;
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.how-list {
+  padding-left: 22px;
+  margin-top: 10px;
+}
+
+.how-list li {
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+
+/* === TEXT BLOCKS === */
+.text-block {
+  margin-top: 28px;
+}
+
+.text-block p,
+.text-block li {
+  font-size: 15px;
+  color: #333;
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+/* === FAQ SECTION === */
+.faq-section {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.faq-buttons ul {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 14px;
+}
+
+.faq-button {
+  background: #f1642e;
+  color: #fff;
+  padding: 10px 16px;
+  text-decoration: none;
+  border-radius: 8px;
+  margin: 6px;
+  display: inline-block;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.faq-button:hover {
+  background: #504e76;
+}
+
+/* === FOOTER === */
+.main-footer {
+  background-color: #504e76;
+  margin-top: 60px;
+  padding: 40px 20px;
+  color: #fdf8e2;
+  text-align: center;
+}
+
+.footer-logos {
+  margin-bottom: 16px;
+}
+
+.footer-logos img {
+  max-height: 48px;
+  margin: 0 8px;
+  vertical-align: middle;
+}
+
+.footer-text a {
+  color: #fdf8e2;
+  text-decoration: underline;
+  font-size: 14px;
+}
+
+/* === ACCESIBILIDAD === */
+:focus-visible {
+  outline: 3px solid rgba(241, 100, 46, 0.4);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* === RESPONSIVO === */
+@media (max-width: 768px) {
+  .step {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .instructions-easy {
+    padding: 18px;
+  }
+
+  figure.image-placeholder img {
+    max-width: 100%;
+  }
+}

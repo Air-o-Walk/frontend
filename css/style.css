@@ -1,0 +1,714 @@
+/* ======================================================
+   RESET BÁSICO
+   ====================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #F7F3E7; /* color crema */
+}
+
+
+
+/* ======================================================
+   NAVBAR (Sticky + Responsive)
+   ====================================================== */
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+
+
+
+    padding: 10px 64px;
+    background-color: #4B4773;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+/* ----- LOGO CIRCULAR ----- */
+.nav-left {
+    display: flex;
+    align-items: center;
+}
+
+.logo-circle {
+    height: 72px; /* igual HiFi */
+    width: auto;
+}
+
+/* ----- LINKS CENTRALES ----- */
+.nav-links {
+    display: flex;
+    gap: 48px;
+    flex: 1;
+    justify-content: center;
+}
+
+.nav-links a {
+    text-decoration: none;
+    font-size: 18px;
+    color: #F5F5F5;
+    font-weight: 400;
+    transition: 0.2s ease;
+}
+
+.nav-links a:hover {
+    opacity: 0.8;
+}
+
+/* ----- BOTÓN + LOGIN ----- */
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.btn-signup {
+    background-color: #A7C575;
+    border: none;
+    padding: 10px 26px;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #2E2E2E;
+    transition: 0.2s ease;
+    white-space: nowrap;
+}
+
+.btn-signup:hover {
+    filter: brightness(0.95);
+}
+
+.login {
+    color: #E07B4C;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+
+
+/* ======================================================
+   RESPONSIVE NAVBAR
+   ====================================================== */
+
+/* Tablets */
+@media (max-width: 900px) {
+    .navbar {
+        padding: 10px 24px;
+        gap: 20px;
+    }
+
+    .nav-links {
+        gap: 24px;
+    }
+
+    .logo-circle {
+        height: 60px;
+    }
+}
+
+/* Móviles */
+@media (max-width: 700px) {
+    .navbar {
+        padding: 10px 16px;
+    }
+
+    .nav-links {
+        display: none; /* si quieres luego hacemos menú hamburguesa */
+    }
+
+    .logo-circle {
+        height: 52px;
+    }
+
+    .nav-right {
+        gap: 12px;
+    }
+
+    .btn-signup {
+        padding: 8px 18px;
+        font-size: 14px;
+    }
+
+    .login {
+        font-size: 14px;
+    }
+}
+
+/* ======================================================
+   HERO SECTION
+   ====================================================== */
+
+.hero {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* pantalla completa */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.65); /* oscurecer como en el HiFi */
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2; /* por encima de la imagen */
+    text-align: center;
+    color: white;
+}
+
+.hero-content h1 {
+    font-size: 56px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.hero-content p {
+    font-size: 26px;
+    font-weight: 300;
+    margin-bottom: 25px;
+}
+
+/* Botón del hero */
+.btn-hero {
+    background-color: #A7C575;
+    color: #2E2E2E;
+    padding: 14px 36px;
+    border-radius: 16px;
+    border: none;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+
+.btn-hero:hover {
+    filter: brightness(0.93);
+}
+
+
+/* ======================================================
+   HERO RESPONSIVE
+   ====================================================== */
+
+@media (max-width: 900px) {
+    .hero {
+        height: 60vh;
+    }
+
+    .hero-content h1 {
+        font-size: 42px;
+    }
+
+    .hero-content p {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .hero {
+        height: 55vh;
+    }
+
+    .hero-content h1 {
+        font-size: 34px;
+    }
+
+    .hero-content p {
+        font-size: 18px;
+    }
+
+    .btn-hero {
+        font-size: 18px;
+        padding: 12px 28px;
+    }
+}
+
+/* ======================================================
+   SECTION MAP
+   ====================================================== */
+
+.section-map {
+    text-align: center;
+    padding: 80px 0;
+}
+
+.map-title {
+    font-size: 44px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: #E37A4A; /* naranja del HiFi */
+}
+
+
+.map-sub {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 40px;
+}
+
+.map-img {
+    width: 50%;
+    max-width: 650px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+}
+
+
+/* Tabs (O3 / CO / NO2 / SO2) */
+.gas-tabs {
+    margin-top: 10px;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.tab {
+    padding: 6px 22px;
+    border: none;
+    border-radius: 40px;
+    background-color: #B9C98F;   /* INACTIVO */
+    color: #000;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    transition: 0.15s ease-in-out;
+}
+
+.tab.active {
+    background-color: #A7C575;   /* ACTIVO */
+    font-weight: 700;            /* más bold */
+}
+
+
+/* Text section */
+.gas-info {
+    width: 60%;
+    margin: auto;
+    text-align: left;
+}
+
+.gas-info h3 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #CC441A; /* rojo/naranja del HiFi */
+    margin-bottom: 20px;
+}
+
+.gas-info p {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #222;
+    margin-bottom: 30px;
+}
+
+.map-btn {
+    padding: 12px 30px;
+    border-radius: 16px;
+    font-size: 18px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .map-img {
+        width: 90%;
+    }
+
+    .gas-info {
+        width: 80%;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .map-img {
+        width: 95%;
+    }
+
+    .gas-info {
+        width: 90%;
+    }
+
+    .tab {
+        padding: 6px 14px;
+        font-size: 14px;
+    }
+}
+
+/* ===========================
+      PRODUCTO SECTION
+   =========================== */
+
+.section-producto {
+    padding: 100px 0;
+}
+
+.producto-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 80px;
+    width: 90%;
+    margin: auto;
+}
+
+.producto-lamp {
+    width: 350px;
+    height: auto;
+    flex-shrink: 0;
+}
+
+.producto-content {
+    width: 60%;
+}
+
+.center {
+    text-align: center;
+}
+
+.producto-desc {
+    max-width: 620px;
+    margin: 20px auto 60px;
+    line-height: 1.7;
+    font-size: 18px;
+    color: #333;
+}
+
+/* GRID vertical (iconos arriba del texto) */
+.producto-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 70px 100px;
+}
+
+.feature-v {
+    text-align: center;
+    max-width: 330px;
+    margin: auto;
+}
+
+/* Icono circular */
+.circle-icon {
+    width: 85px;
+    height: 85px;
+    background-color: #B9C98F;
+    border-radius: 50%;
+    margin: 0 auto 18px;
+}
+
+/* título */
+.feature-v h4 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #222;
+}
+
+/* párrafo */
+.feature-v p {
+    font-size: 15px;
+    line-height: 1.5;
+    color: #444;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+
+    .producto-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .producto-content {
+        width: 100%;
+    }
+
+    .producto-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .producto-lamp {
+        width: 260px;
+    }
+}
+
+.orange {
+    color: #E87B4C;   /* El naranja exacto del HiFi */
+}
+
+/* ============================
+   SOBRE NOSOTROS
+=============================== */
+
+.section-nosotros {
+    text-align: center;
+    padding: 100px 0;
+}
+
+.section-nosotros .section-title {
+    font-size: 48px;
+    color: #E37A4A; /* naranja del HiFi */
+    margin-bottom: 10px;
+}
+
+.nosotros-desc {
+    width: 70%;
+    margin: 0 auto 60px auto;
+    font-size: 18px;
+    color: #333;
+    line-height: 1.7;
+}
+
+/* GRID DE 3 ARRIBA + 2 ABAJO EXACTO */
+.nosotros-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    justify-items: center;
+    margin-top: 40px;
+}
+
+/* Hacer que SOLO la segunda fila esté centrada */
+.nosotros-grid > div:nth-child(4),
+.nosotros-grid > div:nth-child(5) {
+    grid-column: span 1;
+    justify-self: center; /* centra cada tarjeta */
+}
+
+
+/* Tarjetas */
+.nosotros-card {
+    background-color: #CBCBF3; /* lavanda del HiFi */
+    padding: 35px 25px;
+    border-radius: 30px;
+    width: 260px;
+    min-height: 220px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+}
+
+/* Círculo verde */
+.icon-circle {
+    width: 56px;
+    height: 56px;
+    background-color: #C7D99A; /* verde claro del HiFi */
+    border-radius: 50%;
+}
+
+/* Texto */
+.nosotros-card p {
+    font-size: 18px;
+    color: #1D1D1D;
+    line-height: 1.5;
+    font-weight: 500;
+    text-align: center;
+}
+
+/* CTA final */
+.nosotros-cta {
+    margin-top: 20px;
+}
+
+.nosotros-cta p {
+    margin-bottom: 14px;
+    font-size: 18px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .nosotros-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .nosotros-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .nosotros-card {
+        width: 80%;
+    }
+}
+
+/* ============================
+      CONTACTO SECTION
+=============================== */
+
+.contact-section {
+    background-color: #4B4773; /* azul oscuro del HiFi */
+    padding: 80px 0 40px;
+    color: white; /* texto blanco */
+}
+
+.contact-wrapper {
+    width: 85%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+}
+
+/* LEFT SIDE */
+.contact-left {
+    width: 45%;
+}
+
+.contact-title {
+    font-size: 48px;
+    color: #E37A4A !important; /* naranja exacto del HiFi */
+    margin-bottom: 20px;
+}
+
+.contact-phone {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.contact-text {
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: white;
+}
+
+.contact-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 40px;
+}
+
+.contact-list li {
+    font-size: 18px;
+    margin-bottom: 6px;
+    color: white;
+}
+
+.contact-ayto {
+    width: 200px;
+    margin-top: 20px;
+}
+
+
+/* RIGHT SIDE */
+.contact-right {
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+}
+
+.map-label {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.contact-map {
+    width: 100%;
+    height: 260px;
+    background-color: #D9D9D9;
+    border-radius: 18px;
+    border: 3px solid #C5C5C5;
+}
+
+
+/* ============================
+      FOOTER BOTTOM
+=============================== */
+
+.footer-bottom {
+    margin-top: 60px;
+    border-top: 2px solid rgba(255,255,255,0.3);
+    padding-top: 30px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+
+    color: white;
+}
+
+.footer-logo {
+    width: 80px;
+}
+
+.footer-links {
+    display: flex;
+    gap: 30px;
+}
+
+.footer-links a {
+    color: white;        /* EN BLANCO */
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.btn-download {
+    background-color: #A7C575; /* verde suave */
+    color: #2E2E2E;
+    padding: 12px 30px;
+    font-size: 16px;
+    border-radius: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+
+    .contact-wrapper {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .contact-left,
+    .contact-right {
+        width: 100%;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+}

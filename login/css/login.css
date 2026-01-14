@@ -1,0 +1,202 @@
+/* ------------------------------
+   RESET
+------------------------------ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background-color: #FAF7E8; /* crema claro */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ------------------------------
+   TOP BAR
+------------------------------ */
+.top-bar {
+    width: 100%;
+    background-color: #474579; /* morado cabecera */
+    padding: 18px 25px;
+}
+
+.back-btn {
+    color: #FF6A4D;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+/* ------------------------------
+   LOGO + TÍTULO SIN CURVA
+------------------------------ */
+.logo-wrapper {
+    text-align: center;
+    margin-top: 25px;        /* ajusta separación del top */
+    margin-bottom: 20px;     /* ajusta separación respecto al login */
+}
+
+.logo-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #474579;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+}
+
+.logo-wrapper img {
+    width: 105px;
+    display: block;
+    margin: 0 auto;
+}
+
+/* ------------------------------
+   CONTENIDO PRINCIPAL
+------------------------------ */
+.login-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 120px;
+}
+
+/* Caja verde */
+.login-box {
+    background-color: #A9C073;
+    width: 350px;
+    padding: 35px 25px;
+    border-radius: 12px;
+    text-align: left;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
+}
+
+.login-box h2 {
+    text-align: center;
+    color: #fff;
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+/* Inputs */
+.login-box label {
+    margin-top: 12px;
+    font-size: 14px;
+    color: #fff;
+}
+
+.login-box input {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: none;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+/* Forgot password */
+.forgot-pass {
+    display: block;
+    font-size: 12px;
+    text-align: center;
+    margin-bottom: 15px;
+    color: #FF7A70;
+    font-weight: 700;  /* MÁS VISIBLE */
+    text-decoration: none;
+}
+
+/* Botón login */
+.login-btn {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: #504e76;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.login-btn:hover {
+    transform: scale(1.03);
+}
+
+/* ------------------------------
+   FOOTER
+------------------------------ */
+.footer {
+    background-color: #474579;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;  
+    flex-wrap: wrap;
+    min-height: 90px;
+}
+
+/* izquierda */
+.footer-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.footer-logo {
+    width: 40px;
+    margin-bottom: 5px;
+}
+
+/* centro */
+.footer-center img {
+    width: 100px;
+    border-radius: 6px;
+}
+
+/* derecha */
+.footer-right {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.footer-right a {
+    color: #fff;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.footer-right a:hover {
+    text-decoration: underline;
+}
+
+/* ------------------------------
+   RESPONSIVE
+------------------------------ */
+@media (max-width: 600px) {
+    .login-box {
+        width: 90%;
+    }
+
+    .footer {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+}
+
+.error-msg {
+    background-color: #ff6a6a;
+    color: white;
+    padding: 8px 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+}

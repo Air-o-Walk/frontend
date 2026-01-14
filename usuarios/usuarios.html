@@ -1,0 +1,90 @@
+<!-- ---------------------------------------------------- -->
+<!-- usuarios.html (muestra la tabla para el admin) -->
+<!-- Maria Algora  -->
+<!-- ---------------------------------------------------- -->
+<!DOCTYPE html>
+<html lang="es">
+<!-- ---------------------------------------------------- -->
+<!-- ---------------------------------------------------- -->
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>USUARIOS</title>
+
+  <!-- aqui pongo mis scripts-->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<!-- ---------------------------------------------------- -->
+<!-- ---------------------------------------------------- -->
+
+<body>
+  <!--  -->
+  <!-- HEADER -->
+  <header class="main-header">
+    <div class="header-container">
+      <div class="logo">
+        <img src="https://sagucre.upv.edu.es/images/260/21639371/Diagramadesitioweb2-tzmgvOszHG8SDcflHZ0HZw.png"
+          alt="logo" />
+      </div>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="https://sagucre.upv.edu.es/dashboard/index.html" >Dashboard</a></li>
+          <li><a href=https://sagucre.upv.edu.es/estado-nodos/estadoNodos.html >Nodos</a></li>
+          <li><a href="https://sagucre.upv.edu.es/usuarios/usuarios.html" class="active">Usuarios</a></li>
+          <li><a href="https://sagucre.upv.edu.es/RecompensasAdmin/RecAdmin.html">Premios</a></li>
+          <li><a href="https://sagucre.upv.edu.es/incidencias/index.html">Incidencias</a></li>
+        </ul>
+      </nav>
+      <a href="#" class="logout"><u>Cerrar sesión &gt;</u></a>
+    </div>
+    <hr class="divider" />
+  </header>
+
+  <div>
+    <h1>Información de los usuarios</h1>
+
+    <table>
+      <thead>
+        <tr>
+          <th></th> <!-- usuario -->
+          <th></th> <!-- correo -->
+          <th></th> <!-- CP  -->
+          <th></th> <!-- codigo -->
+          <th></th> <!-- puntos -->
+          <th></th> <!-- tiempo  -->
+          <th></th> <!-- km -->
+        </tr>
+      </thead>
+      <tbody id="tabla-usuarios">
+        <!-- Aquí se insertarán las filas -->
+      </tbody>
+    </table>
+
+  </div>
+  <br>
+  <br>
+
+  <footer class="main-footer">
+    <div class="footer-logos">
+      <img src="https://sagucre.upv.edu.es/images/260/21639371/Diagramadesitioweb2-tzmgvOszHG8SDcflHZ0HZw.png"
+        alt=" Logo" class="footer-logo" />
+      <img src="https://sagucre.upv.edu.es/images/120/21601990/LogoGeneralitatValenciana-8bgziSb98SaymNPrT6-J0Q.png"
+        alt="Generalitat Valenciana" class="footer-logo" />
+    </div>
+    <p class="footer-text">
+      <a href="mailto:10f77c86c32f44f9a3b6d5c1c3156e@plesk.local">10f77c86c32f44f9a3b6d5c1c3156e@plesk.local</a> |
+      <a href="https://sagucre.upv.edu.es/legal-notice/legal.html">Legal Notice</a> |
+      <a href="https://sagucre.upv.edu.es/privacy/priv.html">Privacy Policy</a>
+    </p>
+  </footer>
+
+  <script src="https://sagucre.upv.edu.es/usuarios/js/logicaTablaUsuarios.js"></script>
+<script src="../logout/popup-logout.js" defer></script>
+
+</body>
+
+</html>
+<!-- ---------------------------------------------------- -->
+<!-- ---------------------------------------------------- -->

@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Air-o-Walk</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+
+    <style>
+        #map {
+            height: 320px;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+
+        .contact-map-container {
+            width: 100%;
+            height: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        /* Estilos para las listas de información */
+        #gas-text ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 15px;
+        }
+
+        #gas-text li {
+            background: #fff;
+            margin-bottom: 8px;
+            padding: 10px;
+            border-radius: 6px;
+            border-left: 4px solid #A8B870;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        #gas-text strong {
+            color: #4B4773;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="nav-left">
+            <img src="https://sagucre.upv.edu.es/images/260/21639371/Diagramadesitioweb2-tzmgvOszHG8SDcflHZ0HZw.png"
+                class="logo-circle" alt="Air-o-walk logo">
+        </div>
+
+        <nav class="nav-links">
+            <a href="#maps">Mapa de Aire</a>
+            <a href="#beneficios">Tus Beneficios</a> <a href="#alianzas">Dónde Encontrarnos</a> <a href="#sobre">Sobre
+                Nosotros</a> <a href="#contacto">Contacto</a>
+        </nav>
+
+        <div class="nav-right">
+            <button class="btn-signup" onclick="window.location.href='https://sagucre.upv.edu.es/descarga/';">¡Gana
+                Premios Ya!</button>
+        </div>
+    </header>
+
+    <section class="hero">
+        <img src="assets/hero.png" class="hero-bg" alt="Hero image">
+
+        <div class="hero-content">
+            <h1>
+                El aire no se ve. Aquí sí.
+            </h1>
+
+            <p>Con tus pasos ayuda a construir mapas de calidad del aire.
+                <br>¡Suma puntos y gana premios por participar!
+            </p>
+
+            <a href="#beneficios" class="btn-hero">Descubre cómo funciona</a>
+        </div>
+    </section>
+    <section id="maps" class="section-map">
+
+        <h2 class="map-title">Mapa en Tiempo Real</h2>
+        <p class="map-sub">Gandia, platja de gandia</p>
+
+
+        <div class="map-layout">
+            <div class="map-column">
+
+                <p>¡Selecciona un contaminante!</p>
+                <div class="gas-tabs">
+                    <button class="tab active" onclick="showLayer('AirQuality', this)">Calidad Aire</button>
+                    <button class="tab" onclick="showLayer('O3', this)">O3</button>
+                    <button class="tab" onclick="showLayer('CO', this)">CO</button>
+                    <button class="tab" onclick="showLayer('NO2', this)">NO2</button>
+                </div>
+                <div id="map"></div>
+            </div>
+            <div class="gas-info">
+                <h3 id="gas-title">Calidad del Aire</h3>
+
+                <div id="gas-text">
+                    <p>El sistema muestra datos en tiempo real de los sensores distribuidos por la ciudad combinando
+                        todos
+                        los contaminantes.</p>
+                    <ul>
+                        <li><strong>🟢 Buena:</strong> Disfruta de tus actividades al aire libre.</li>
+                        <li><strong>🟡 Moderada:</strong> Personas sensibles deben reducir esfuerzos.</li>
+                        <li><strong>🟠 Mala / 🔴 Muy Mala:</strong> Evita actividades físicas en el exterior.</li>
+                    </ul>
+                </div>
+                <br>
+                <button class="btn-signup map-btn"
+                    onclick="window.location.href='https://sagucre.upv.edu.es/descarga/';">¡Descarga la App!</button>
+            </div>
+           
+        </div>
+
+<div class="aqi-info">
+  <h3>¿Qué es el Índice de Calidad del Aire (AQI)?</h3>
+
+  <p>
+    El <strong>AQI</strong> es un indicador numérico que resume la calidad del aire
+    combinando todos los contaminantes medidos por los sensores.
+    <br><br>
+    <strong>Cuanto más bajo es el valor, mejor es el aire que respiras.</strong>
+  </p>
+
+  <ul>
+    <li><strong>🟢 0–50 · Buena</strong> Aire limpio. Ideal para caminar.</li>
+    <li><strong>🟡 51–100 · Moderada</strong> Aceptable. Precaución en personas sensibles.</li>
+    <li><strong>🟠 101–150 · Mala</strong> Puede afectar a grupos de riesgo.</li>
+    <li><strong>🔴 151+ · Muy mala</strong> Evita actividad física al aire libre.</li>
+  </ul>
+</div>
+
+
+    </section>
+
+
+    <section id="beneficios" class="section-producto">
+        <div class="beneficios-container">
+
+            <div class="beneficios-header">
+                <h2 class="section-title orange">Tu esfuerzo tiene recompensa</h2>
+                <p class="producto-desc">
+                    Con Air-o-Walk, tus trayectos diarios se convierten en puntos canjeables
+                    y en información valiosa sobre tu aire.
+                </p>
+            </div>
+
+            <div class="producto-grid">
+                <div class="feature-v">
+                    <i class="fa-solid fa-gift icon-feature"></i>
+                    <h4>Gana premios directos</h4>
+                    <p>Acumula puntos por cada metro que recorres. Canjéalos por descuentos en comercios locales y
+                        beneficios exclusivos en tu ciudad.</p>
+                </div>
+
+                <div class="feature-v">
+                    <i class="fa-solid fa-chart-line icon-feature"></i>
+                    <h4>Tu resumen de salud</h4>
+                    <p>Al finalizar tu paseo, visualiza el tiempo, la distancia y un resumen detallado de la calidad del
+                        aire que has respirado.</p>
+                </div>
+            </div>
+
+            <div class="como-funciona-section">
+                <h3 class="como-funciona-title">¿Cómo empiezo a ganar?</h3>
+                <div class="pasos-container">
+                    <div class="paso-card">
+                        <div class="paso-number">1</div>
+                        <p><strong>Camina</strong> por donde quieras, a tu ritmo y en tus rutas de siempre.</p>
+                    </div>
+                    <div class="paso-card">
+                        <div class="paso-number">2</div>
+                        <p><strong>Reciba</strong> tu resumen de aire respirado y canjea tus premios.</p>
+                    </div>
+                    <div class="paso-card">
+                        <div class="paso-number">3</div>
+                        <p><strong>Acumula</strong> puntos automáticamente en tu cuenta por cada trayecto.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="alianzas" class="section-alianzas">
+        <div class="alianzas-container">
+            <h2 class="section-title orange center">Nuestra Red de Ayuntamientos</h2>
+            <p class="alianzas-desc center">Consulta si tu ciudad forma parte de Air-o-Walk y conoce los puntos de
+                recogida oficiales.</p>
+
+            <div class="search-box">
+                <input type="text" id="citySearch" placeholder="Busca tu ciudad (ej. Alicante, Sevilla, Bilbao)...">
+            </div>
+
+            <div class="ayto-grid" id="aytoGrid">
+                <div class="ayto-card" data-city="valencia">
+                    <div class="ayto-logo-box"><i class="fa-solid fa-location-dot icon-alianza"></i></div>
+                    <h4>Ayto. de Valencia</h4>
+                    <p>Punto: Centro Municipal de Tabacalera.</p>
+                    <a href="https://www.valencia.es" target="_blank" class="btn-link">Web Oficial ></a>
+                </div>
+
+                <div class="ayto-card" data-city="gandia">
+                    <div class="ayto-logo-box"><i class="fa-solid fa-location-dot icon-alianza"></i></div>
+                    <h4>Ayto. de Gandia</h4>
+                    <p>Punto: Oficina de Medio Ambiente (Plaza Tirant).</p>
+                    <a href="https://www.gandia.es" target="_blank" class="btn-link">Web Oficial ></a>
+                </div>
+
+                <div class="ayto-card" data-city="madrid">
+                    <div class="ayto-logo-box"><i class="fa-solid fa-location-dot icon-alianza"></i></div>
+                    <h4>Ayto. de Madrid</h4>
+                    <p>Punto: Centro de Innovación La Nave.</p>
+                    <a href="https://www.madrid.es" target="_blank" class="btn-link">Web Oficial ></a>
+                </div>
+
+                <div class="ayto-card hidden-initially" data-city="alicante">
+                    <div class="ayto-logo-box"><i class="fa-solid fa-location-dot icon-alianza"></i></div>
+                    <h4>Ayto. de Alicante</h4>
+                    <p>Punto: Concejalía de Medio Ambiente.</p>
+                    <a href="https://www.alicante.es" target="_blank" class="btn-link">Web Oficial ></a>
+                </div>
+
+                <div class="ayto-card hidden-initially" data-city="oliva">
+                    <div class="ayto-logo-box"><i class="fa-solid fa-location-dot icon-alianza"></i></div>
+                    <h4>Ayto. de Oliva</h4>
+                    <p>Punto: Departamento de Urbanismo.</p>
+                    <a href="https://www.oliva.es" target="_blank" class="btn-link">Web Oficial ></a>
+                </div>
+
+                <div class="ayto-card hidden-initially" data-city="sevilla">
+                    <div class="ayto-logo-box"><i class="fa-solid fa-location-dot icon-alianza"></i></div>
+                    <h4>Ayto. de Sevilla</h4>
+                    <p>Punto: Agencia de la Energía de Sevilla.</p>
+                    <a href="https://www.sevilla.org" target="_blank" class="btn-link">Web Oficial ></a>
+                </div>
+            </div>
+
+            <div id="no-results" style="display: none; text-align: center; padding: 40px; color: #666;">
+                <i class="fa-solid fa-circle-question" style="font-size: 3rem; color: #ddd; margin-bottom: 15px;"></i>
+                <p>Lo sentimos, tu ayuntamiento aún no forma parte de la red Air-o-Walk.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="sobre" class="section-nosotros">
+        <div class="nosotros-container">
+            <div class="nosotros-header">
+                <h2 class="section-title orange center">Nuestra Misión y Origen</h2>
+                <p class="nosotros-meta center">
+                    Air-o-Walk nace en los laboratorios de la <strong>Universidad Politécnica de Valencia
+                        (UPV)</strong>.
+                    Lo que comenzó como una investigación científica se ha convertido en una plataforma para empoderar a
+                    los ciudadanos frente a la contaminación invisible.
+                </p>
+            </div>
+
+            <div class="metas-grid">
+                <div class="meta-card">
+                    <div class="meta-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                    <h4>Innovación desde la UPV</h4>
+                    <p>Utilizamos tecnología de sensores desarrollada en entornos universitarios para garantizar que
+                        cada dato de O3, CO o NO2 sea preciso y útil para tu salud.</p>
+                </div>
+
+                <div class="meta-card">
+                    <div class="meta-icon"><i class="fa-solid fa-bullseye"></i></div>
+                    <h4>Ciudades Transparentes</h4>
+                    <p>Nuestra meta es mapear cada rincón de la ciudad. Queremos que la calidad del aire deje de ser un
+                        misterio y se convierta en una herramienta para decidir por dónde caminar.</p>
+                </div>
+
+                <div class="meta-card">
+                    <div class="meta-icon"><i class="fa-solid fa-leaf"></i></div>
+                    <h4>Movilidad con Propósito</h4>
+                    <p>No solo medimos; motivamos. Al premiar tus pasos, fomentamos una cultura donde caminar es la
+                        opción más inteligente para ti y para el planeta.</p>
+                </div>
+            </div>
+
+            <div class="nosotros-trust">
+                <p>Un proyecto de ciencia ciudadana para transformar nuestra forma de vivir la ciudad.</p>
+            </div>
+        </div>
+    </section>
+
+
+    <footer id="contacto" class="contact-section">
+        <div class="contact-wrapper">
+            <div class="contact-brand">
+                <img src="https://sagucre.upv.edu.es/images/260/21639371/Diagramadesitioweb2-tzmgvOszHG8SDcflHZ0HZw.png"
+                    alt="Air-o-walk logo" class="footer-logo-main">
+                <p class="brand-mission">Liderando la transición hacia ciudades más inteligentes y habitables a través
+                    de la inteligencia ambiental.</p>
+            </div>
+
+            <div class="contact-info">
+                <h3 class="footer-heading">Contacto</h3>
+                <div class="contact-methods">
+                    <div class="method">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span>info@airowalk.com</span>
+                    </div>
+                    <div class="method">
+                        <i class="fa-solid fa-headset"></i>
+                        <span>soporte@airowalk.com</span>
+                    </div>
+                    <div class="method">
+                        <i class="fa-solid fa-phone"></i>
+                        <span>+34 965 258 736</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-institutional">
+                <h3 class="footer-heading">Partners Globales</h3>
+                <div class="footer-partners">
+                    <img src="https://sagucre.upv.edu.es/images/120/21601990/LogoGeneralitatValenciana-8bgziSb98SaymNPrT6-J0Q.png"
+                        alt="Generalitat Valenciana" class="partner-logo">
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-legal">
+            <div class="legal-container">
+                <p>&copy; 2025 Air-o-Walk Technology. Todos los derechos reservados.</p>
+                <div class="legal-links">
+                    <a href="#maps">Mapa</a>
+                    <a href="#beneficios">Beneficios</a>
+                    <a href="#alianzas">Red de Ayuntamientos</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
+
+    <script>
+        // --- 1. DATOS DE TEXTO PARA CADA GAS ---
+        const gasInfoData = {
+            "AirQuality": {
+                title: "Calidad del Aire General",
+                text: `
+                    <p>El sistema muestra datos en tiempo real de los sensores distribuidos por la ciudad, combinando todos los contaminantes para dar un índice global.</p>
+                    <ul>
+                        <li><strong>🟢 Buena:</strong> Disfruta de tus actividades al aire libre sin riesgo.</li>
+                        <li><strong>🟡 Moderada:</strong> Personas sensibles deben considerar reducir esfuerzos prolongados.</li>
+                        <li><strong>🟠 Mala:</strong> Grupos de riesgo deben evitar el ejercicio al aire libre.</li>
+                        <li><strong>🔴 Muy Mala:</strong> Evita actividades físicas en el exterior.</li>
+                    </ul>`
+            },
+            "O3": {
+                title: "Ozono Troposférico (O₃)",
+                text: `
+                    <p>No se emite directamente, sino que se forma por la reacción de óxidos de nitrógeno (NOx) y compuestos orgánicos con la luz solar (común en verano).</p>
+                    <ul>
+                        <li><strong>🌍 Fuentes:</strong> Tráfico, industria, solventes y centrales térmicas.</li>
+                        <li><strong>⚠️ Límites:</strong> OMS (100 µg/m³), UE (120 µg/m³ máx 25 días/año).</li>
+                        <li><strong>🩺 Salud:</strong> Irritación de ojos/garganta, tos, asma y menor función pulmonar.</li>
+                        <li><strong>🛡️ Consejo:</strong> Evitar deporte intenso entre 14:00 y 20:00 en días soleados.</li>
+                    </ul>`
+            },
+            "CO": {
+                title: "Monóxido de Carbono (CO)",
+                text: `
+                    <p>Gas generado por la combustión incompleta en vehículos y sistemas de calefacción o motores mal ventilados.</p>
+                    <ul>
+                        <li><strong>🌍 Fuentes:</strong> Vehículos, estufas antiguas, incendios y calderas.</li>
+                        <li><strong>⚠️ Límites:</strong> OMS (4 mg/m³ en 24h), UE (10 mg/m³ en 8h).</li>
+                        <li><strong>🩺 Salud:</strong> Impide el transporte de oxígeno. Causa dolor de cabeza y mareos.</li>
+                        <li><strong>🛡️ Consejo:</strong> No hacer ejercicio junto a carreteras con tráfico denso.</li>
+                    </ul>`
+            },
+            "NO2": {
+                title: "Dióxido de Nitrógeno (NO₂)",
+                text: `
+                    <p>Procede principalmente de procesos de combustión a altas temperaturas, siendo el tráfico rodado su mayor emisor.</p>
+                    <ul>
+                        <li><strong>🌍 Fuentes:</strong> Tráfico diésel, calefacciones de gas y centrales térmicas.</li>
+                        <li><strong>⚠️ Límites:</strong> OMS (10 µg/m³ anual), UE (40 µg/m³ anual).</li>
+                        <li><strong>🩺 Salud:</strong> Irritación pulmonar, empeora el asma y alergias.</li>
+                        <li><strong>🛡️ Consejo:</strong> Evitar avenidas con mucho tráfico y ventilar en horas valle.</li>
+                    </ul>`
+            }
+        };
+
+
+        // --- 2. CONFIGURACIÓN DEL MAPA ---
+        const map = L.map('map').setView([38.970728230052366, -0.18001670497276576], 15);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        const layersPoints = { "CO": L.layerGroup(), "O3": L.layerGroup(), "NO2": L.layerGroup(), "AirQuality": L.layerGroup() };
+
+        const layersHeat = {
+            "CO": L.heatLayer([], {
+                radius: 25,
+                blur: 15,
+                maxZoom: 17,
+                gradient: { 0.0: "#00FF00", 0.4: "#FFFF00", 0.7: "#FFA500", 1.0: "#FF0000" }
+            }),
+            "O3": L.heatLayer([], {
+                radius: 25,
+                blur: 15,
+                maxZoom: 17,
+                gradient: { 0.0: "#00FF00", 0.4: "#FFFF00", 0.7: "#FFA500", 1.0: "#FF0000" }
+            }),
+            "NO2": L.heatLayer([], {
+                radius: 25,
+                blur: 15,
+                maxZoom: 17,
+                gradient: { 0.0: "#00FF00", 0.4: "#FFFF00", 0.7: "#FFA500", 1.0: "#FF0000" }
+            }),
+            "AirQuality": L.heatLayer([], {
+                radius: 25,
+                scaleRadius: true,
+                blur: 10,
+                maxZoom: 17,
+                gradient: { 0.0: "#00FF00", 0.6: "#00FF00", 0.7: "#FFA500", 1.0: "#FF0000" }
+            })
+        };
+
+        const gasColors = { "co": "#FF4136", "o3": "#0074D9", "no2": "#2ECC40" };
+
+        function normalize(value, maxExpected) { return Math.min(1, value / maxExpected); }
+
+        function getColorByQuality(value) {
+            if (value < 0.4) return "#00FF00";
+            else if (value < 0.7) return "#FFFF00";
+            else if (value < 0.9) return "#FFA500";
+            else return "#FF0000";
+        }
+
+        function calidadAireTexto(valor) {
+            if (valor < 0.4) return "Buena";
+            else if (valor < 0.7) return "Moderada";
+            else if (valor < 0.9) return "Mala";
+            else return "Muy Mala";
+        }
+
+        // --- 3. FUNCIÓN PRINCIPAL: CAMBIAR CAPA Y TEXTO ---
+        function showLayer(type, btnElement) {
+            // A. Cambiar Mapa
+            Object.values(layersPoints).forEach(layer => map.removeLayer(layer));
+            Object.values(layersHeat).forEach(layer => map.removeLayer(layer));
+
+            //layersPoints[type].addTo(map);
+            layersHeat[type].addTo(map);
+
+            // B. Actualizar Botones
+            if (btnElement) {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                btnElement.classList.add('active');
+            }
+
+            // C. ACTUALIZAR TEXTO DE INFORMACIÓN
+            const info = gasInfoData[type];
+            if (info) {
+                document.getElementById('gas-title').textContent = info.title;
+                document.getElementById('gas-text').innerHTML = info.text;
+            }
+        }
+
+        // --- 4. CARGAR DATOS API ---
+        fetch('https://api.sagucre.upv.edu.es/measurements')
+            .then(response => response.json())
+            .then(data => {
+                const measurements = data.measurements;
+
+                for (let i = 0; i < measurements.length; i++) {
+                    const d = measurements[i];
+
+                    // CO
+                    if (d.co_value != null) {
+                        const coMarker = L.circleMarker([d.latitude, d.longitude], { radius: 4, fillColor: gasColors.co, color: '#222', weight: 1, fillOpacity: 0.9 })
+                            .bindPopup(`<b>CO</b>: ${d.co_value} ppm<br>Node: ${d.node_id}`);
+                        layersPoints.CO.addLayer(coMarker);
+                        layersHeat.CO.addLatLng([d.latitude, d.longitude, normalize(d.co_value, 2)]);
+                    }
+                    // O3
+                    if (d.o3_value != null) {
+                        const o3Marker = L.circleMarker([d.latitude, d.longitude], { radius: 4, fillColor: gasColors.o3, color: '#222', weight: 1, fillOpacity: 0.9 })
+                            .bindPopup(`<b>O3</b>: ${d.o3_value} µg/m³<br>Node: ${d.node_id}`);
+                        layersPoints.O3.addLayer(o3Marker);
+                        layersHeat.O3.addLatLng([d.latitude, d.longitude, normalize(d.o3_value, 100)]);
+                    }
+                    // NO2
+                    if (d.no2_value != null) {
+                        const no2Marker = L.circleMarker([d.latitude, d.longitude], { radius: 4, fillColor: gasColors.no2, color: '#222', weight: 1, fillOpacity: 0.9 })
+                            .bindPopup(`<b>NO2</b>: ${d.no2_value} µg/m³<br>Node: ${d.node_id}`);
+                        layersPoints.NO2.addLayer(no2Marker);
+                        layersHeat.NO2.addLatLng([d.latitude, d.longitude, normalize(d.no2_value, 100)]);
+                    }
+
+                    // CALIDAD AIRE GLOBAL
+                    const coNorm = d.co_value != null ? normalize(d.co_value, 2) : 0;
+                    const o3Norm = d.o3_value != null ? normalize(d.o3_value, 100) : 0;
+                    const no2Norm = d.no2_value != null ? normalize(d.no2_value, 100) : 0;
+                    let maxNorm = Math.max(coNorm, o3Norm, no2Norm);
+
+                    let maxNormMarker = L.circleMarker([d.latitude, d.longitude], { radius: 6, fillColor: getColorByQuality(maxNorm), color: '#fff', weight: 1, fillOpacity: 0.8 })
+                        .bindPopup(`<b>Calidad del Aire</b>: ${calidadAireTexto(maxNorm)}<br>Node: ${d.node_id}`);
+                    layersPoints.AirQuality.addLayer(maxNormMarker);
+
+                    if (maxNorm > 0) {
+                        layersHeat.AirQuality.addLatLng([d.latitude, d.longitude, maxNorm]);
+                    }
+                }
+
+                // Cargar por defecto
+                showLayer("AirQuality");
+            })
+            .catch(err => console.error('Error API:', err));
+        // --- LÓGICA DE BÚSQUEDA DE CIUDADES ---
+        document.addEventListener("DOMContentLoaded", () => {
+            const inputBusqueda = document.getElementById('citySearch');
+            const tarjetas = document.querySelectorAll('.ayto-card');
+            const mensajeNoResultados = document.getElementById('no-results');
+
+            if (inputBusqueda) {
+                inputBusqueda.addEventListener("input", () => {
+                    const texto = inputBusqueda.value.toLowerCase().trim();
+                    let encontradoCount = 0;
+
+                    tarjetas.forEach(card => {
+                        const ciudad = card.getAttribute('data-city').toLowerCase();
+
+                        // Si no hay texto: mostramos solo los 3 fijos (los que no tienen la clase hidden)
+                        if (texto === "") {
+                            if (!card.classList.contains('hidden-initially')) {
+                                card.style.display = "block";
+                            } else {
+                                card.style.display = "none";
+                            }
+                        }
+                        // Si hay búsqueda: buscamos en toda la red
+                        else if (ciudad.includes(texto)) {
+                            card.style.display = "block";
+                            encontradoCount++;
+                        }
+                        else {
+                            card.style.display = "none";
+                        }
+                    });
+
+                    // Mostrar mensaje si escriben algo que no existe
+                    mensajeNoResultados.style.display = (texto !== "" && encontradoCount === 0) ? "block" : "none";
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
