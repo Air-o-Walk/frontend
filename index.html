@@ -16,6 +16,10 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
 
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+
     <style>
         #map {
             height: 500px;
@@ -237,186 +241,163 @@
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
+
 
     <script>
-        // --- 1. DATOS DE TEXTO PARA CADA GAS ---
-        const gasInfoData = {
-            "AirQuality": {
-                title: "Calidad del Aire General",
-                text: `
-                    <p>El sistema muestra datos en tiempo real de los sensores distribuidos por la ciudad, combinando todos los contaminantes para dar un índice global.</p>
-                    <ul>
-                        <li><strong>🟢 Buena:</strong> Disfruta de tus actividades al aire libre sin riesgo.</li>
-                        <li><strong>🟡 Moderada:</strong> Personas sensibles deben considerar reducir esfuerzos prolongados.</li>
-                        <li><strong>🟠 Mala:</strong> Grupos de riesgo deben evitar el ejercicio al aire libre.</li>
-                        <li><strong>🔴 Muy Mala:</strong> Evita actividades físicas en el exterior.</li>
-                    </ul>`
-            },
-            "O3": {
-                title: "Ozono Troposférico (O₃)",
-                text: `
-                    <p>No se emite directamente, sino que se forma por la reacción de óxidos de nitrógeno (NOx) y compuestos orgánicos con la luz solar (común en verano).</p>
-                    <ul>
-                        <li><strong>🌍 Fuentes:</strong> Tráfico, industria, solventes y centrales térmicas.</li>
-                        <li><strong>⚠️ Límites:</strong> OMS (100 µg/m³), UE (120 µg/m³ máx 25 días/año).</li>
-                        <li><strong>🩺 Salud:</strong> Irritación de ojos/garganta, tos, asma y menor función pulmonar.</li>
-                        <li><strong>🛡️ Consejo:</strong> Evitar deporte intenso entre 14:00 y 20:00 en días soleados.</li>
-                    </ul>`
-            },
-            "CO": {
-                title: "Monóxido de Carbono (CO)",
-                text: `
-                    <p>Gas generado por la combustión incompleta en vehículos y sistemas de calefacción o motores mal ventilados.</p>
-                    <ul>
-                        <li><strong>🌍 Fuentes:</strong> Vehículos, estufas antiguas, incendios y calderas.</li>
-                        <li><strong>⚠️ Límites:</strong> OMS (4 mg/m³ en 24h), UE (10 mg/m³ en 8h).</li>
-                        <li><strong>🩺 Salud:</strong> Impide el transporte de oxígeno. Causa dolor de cabeza y mareos.</li>
-                        <li><strong>🛡️ Consejo:</strong> No hacer ejercicio junto a carreteras con tráfico denso.</li>
-                    </ul>`
-            },
-            "NO2": {
-                title: "Dióxido de Nitrógeno (NO₂)",
-                text: `
-                    <p>Procede principalmente de procesos de combustión a altas temperaturas, siendo el tráfico rodado su mayor emisor.</p>
-                    <ul>
-                        <li><strong>🌍 Fuentes:</strong> Tráfico diésel, calefacciones de gas y centrales térmicas.</li>
-                        <li><strong>⚠️ Límites:</strong> OMS (10 µg/m³ anual), UE (40 µg/m³ anual).</li>
-                        <li><strong>🩺 Salud:</strong> Irritación pulmonar, empeora el asma y alergias.</li>
-                        <li><strong>🛡️ Consejo:</strong> Evitar avenidas con mucho tráfico y ventilar en horas valle.</li>
-                    </ul>`
+// --- 1. CONFIGURACIÓN Y ESTADO ---
+const gasInfoData = {
+    "AirQuality": {
+        title: "Calidad del Aire General",
+        text: `<p>Índice global basado en el contaminante más desfavorable detectado en este intervalo de tiempo.</p>`
+    },
+    "O3": { title: "Ozono Troposférico (O₃)", text: `<p>Concentración de O₃ en µg/m³.</p>` },
+    "CO": { title: "Monóxido de Carbono (CO)", text: `<p>Concentración de CO en ppm.</p>` },
+    "NO2": { title: "Dióxido de Nitrógeno (NO₂)", text: `<p>Concentración de NO₂ en µg/m³.</p>` }
+};
+
+const map = L.map('map').setView([38.9707, -0.1800], 14);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
+
+let rawData = []; 
+let interpolationLayer = null;
+const layersPoints = { "CO": L.layerGroup(), "O3": L.layerGroup(), "NO2": L.layerGroup(), "AirQuality": L.layerGroup() };
+const gasColors = { "co": "#FF4136", "o3": "#0074D9", "no2": "#2ECC40" };
+
+// --- 2. FUNCIONES DE APOYO (HELPERS) ---
+
+function getColor(val, type) {
+    if (type === 'CO') {
+        return val < 0.5 ? "#00FF00" : val < 1.0 ? "#FFFF00" : val < 2.0 ? "#FFA500" : "#FF0000";
+    }
+    // Escala para O3, NO2 y AirQuality (0-100)
+    return val < 40 ? "#00FF00" : val < 70 ? "#FFFF00" : val < 90 ? "#FFA500" : "#FF0000";
+}
+
+function normalize(value, maxExpected) { 
+    return Math.min(1, parseFloat(value || 0) / maxExpected); 
+}
+
+// --- 3. PROCESADOR DE DATOS (CEREBRO) ---
+
+function getValidPoints(type) {
+    return rawData
+        .filter(d => {
+            const hasCoords = d.latitude != null && d.longitude != null && 
+                              !isNaN(parseFloat(d.latitude)) && !isNaN(parseFloat(d.longitude));
+            if (type === "AirQuality") return hasCoords;
+            return hasCoords && d[`${type.toLowerCase()}_value`] != null;
+        })
+        .map(d => {
+            let val;
+            if (type === "AirQuality") {
+                // Cálculo del índice global (0-100)
+                val = Math.max(
+                    normalize(d.co_value, 2), 
+                    normalize(d.o3_value, 100), 
+                    normalize(d.no2_value, 100)
+                ) * 100;
+            } else {
+                val = parseFloat(d[`${type.toLowerCase()}_value`]);
             }
-        };
+            return turf.point([parseFloat(d.longitude), parseFloat(d.latitude)], { val: val });
+        });
+}
 
+// --- 4. GENERADOR DE INTERPOLACIÓN ---
 
-        // --- 2. CONFIGURACIÓN DEL MAPA ---
-        const map = L.map('map').setView([38.970728230052366, -0.18001670497276576], 15);
+function updateMap(type) {
+    // A. Limpieza de capas previas
+    if (interpolationLayer) map.removeLayer(interpolationLayer);
+    Object.values(layersPoints).forEach(l => map.removeLayer(l));
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '© OpenStreetMap contributors'
+    // B. Obtener puntos limpios
+    const points = getValidPoints(type);
+    if (points.length < 2) {
+        console.warn("Datos insuficientes para interpolar:", type);
+        layersPoints[type].addTo(map); // Mostrar al menos los puntos si existen
+        return;
+    }
+
+    // C. Ejecutar Interpolación IDW
+    try {
+        const collection = turf.featureCollection(points);
+        const options = { gridType: 'hex', property: 'val', units: 'kilometers', weight: 1.8 };    
+
+        // cellSize: 0.05 km es ideal para ciudades sin colgar el navegador
+        const grid = turf.interpolate(collection, 0.1, options);
+
+        interpolationLayer = L.geoJson(grid, {
+            style: (feature) => {
+                return {
+                    fillColor: getColor(feature.properties.val, type),
+                    fillOpacity: 0.7,    // Un poco más opaco para que se vea sólido
+                    weight: 0.0,         // Grosor del borde del cuadrado
+                    color: 'rgba(0,0,0,0.2)', // Color del borde (gris translúcido para ver la rejilla)
+                    // Si no quieres bordes, pon weight: 0
+                };
+            }
         }).addTo(map);
 
-        const layersPoints = { "CO": L.layerGroup(), "O3": L.layerGroup(), "NO2": L.layerGroup(), "AirQuality": L.layerGroup() };
+    } catch (e) {
+        console.error("Error en proceso de interpolación:", e);
+    }
+}
 
-        const layersHeat = {
-            "CO": L.heatLayer([], { 
-                radius: 25, 
-                scaleRadius: true, 
-                blur: 10, 
-                maxZoom: 17,
-                gradient: { 0.0: "#00FF00", 0.4: "#00FF00", 0.7: "#FFA500", 1.0: "#FF0000" } }),
-            "O3": L.heatLayer([], { 
-                radius: 25, 
-                scaleRadius: true, 
-                blur: 10, 
-                maxZoom: 17, 
-                gradient: { 0.0: "#00FF00", 0.4: "#00FF00", 0.7: "#FFA500", 1.0: "#FF0000" } }),
-            "NO2": L.heatLayer([], { 
-                radius: 25, 
-                scaleRadius: true, 
-                blur: 10, 
-                maxZoom: 17,
-                gradient: { 0.0: "#00FF00", 0.4: "#00FF00", 0.7: "#FFA500", 1.0: "#FF0000" } }),
-            "AirQuality": L.heatLayer([], { 
-                radius: 25, 
-                scaleRadius: true, 
-                blur: 10, 
-                maxZoom: 17,
-                gradient: { 0.0: "#00FF00", 0.6: "#00FF00", 0.7: "#FFA500", 1.0: "#FF0000" } })
-        };
+// --- 5. GESTOR DE UI Y EVENTOS ---
 
-        const gasColors = { "co": "#FF4136", "o3": "#0074D9", "no2": "#2ECC40" };
+function showLayer(type, btnElement) {
+    updateMap(type);
 
-        function normalize(value, maxExpected) { return Math.min(1, value / maxExpected); }
+    // Actualizar botones
+    if (btnElement) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        btnElement.classList.add('active');
+    }
 
-        function getColorByQuality(value) {
-            if (value < 0.4) return "#00FF00";
-            else if (value < 0.7) return "#FFFF00";
-            else if (value < 0.9) return "#FFA500";
-            else return "#FF0000";
-        }
+    // Actualizar Textos
+    const info = gasInfoData[type];
+    document.getElementById('gas-title').textContent = info.title;
+    document.getElementById('gas-text').innerHTML = info.text;
+}
 
-        function calidadAireTexto(valor) {
-            if (valor < 0.4) return "Buena";
-            else if (valor < 0.7) return "Moderada";
-            else if (valor < 0.9) return "Mala";
-            else return "Muy Mala";
-        }
+// --- 6. CARGA INICIAL (FETCHER) ---
 
-        // --- 3. FUNCIÓN PRINCIPAL: CAMBIAR CAPA Y TEXTO ---
-        function showLayer(type, btnElement) {
-            // A. Cambiar Mapa
-            Object.values(layersPoints).forEach(layer => map.removeLayer(layer));
-            Object.values(layersHeat).forEach(layer => map.removeLayer(layer));
+async function init() {
+    try {
+        const response = await fetch('https://api.sagucre.upv.edu.es/measurements');
+        const data = await response.json();
+        rawData = data.measurements || [];
 
-            //layersPoints[type].addTo(map);
-            layersHeat[type].addTo(map);
+        if (rawData.length === 0) return console.error("Snapshot vacío");
 
-            // B. Actualizar Botones
-            if (btnElement) {
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                btnElement.classList.add('active');
+        // Pre-cargar los LayerGroups de puntos reales
+        rawData.forEach(d => {
+            const lat = parseFloat(d.latitude);
+            const lng = parseFloat(d.longitude);
+            if (isNaN(lat) || isNaN(lng)) return;
+
+            if (d.co_value != null) {
+                layersPoints.CO.addLayer(L.circleMarker([lat, lng], { radius: 4, fillColor: gasColors.co, color: '#000', weight: 1, fillOpacity: 1 }));
             }
-
-            // C. ACTUALIZAR TEXTO DE INFORMACIÓN
-            const info = gasInfoData[type];
-            if (info) {
-                document.getElementById('gas-title').textContent = info.title;
-                document.getElementById('gas-text').innerHTML = info.text;
+            if (d.o3_value != null) {
+                layersPoints.O3.addLayer(L.circleMarker([lat, lng], { radius: 4, fillColor: gasColors.o3, color: '#000', weight: 1, fillOpacity: 1 }));
             }
-        }
+            if (d.no2_value != null) {
+                layersPoints.NO2.addLayer(L.circleMarker([lat, lng], { radius: 4, fillColor: gasColors.no2, color: '#000', weight: 1, fillOpacity: 1 }));
+            }
+            // AirQuality usa círculos blancos con borde del color de calidad
+            const aqVal = Math.max(normalize(d.co_value, 2), normalize(d.o3_value, 100), normalize(d.no2_value, 100)) * 100;
+            layersPoints.AirQuality.addLayer(L.circleMarker([lat, lng], { radius: 5, fillColor: '#FFF', color: getColor(aqVal, 'AirQuality'), weight: 3, fillOpacity: 1 }));
+        });
 
-        // --- 4. CARGAR DATOS API ---
-        fetch('https://api.sagucre.upv.edu.es/measurements')
-            .then(response => response.json())
-            .then(data => {
-                const measurements = data.measurements;
+        showLayer("AirQuality");
 
-                for (let i = 0; i < measurements.length; i++) {
-                    const d = measurements[i];
+    } catch (err) {
+        console.error("Error cargando el snapshot:", err);
+    }
+}
 
-                    // CO
-                    if (d.co_value != null) {
-                        const coMarker = L.circleMarker([d.latitude, d.longitude], { radius: 4, fillColor: gasColors.co, color: '#222', weight: 1, fillOpacity: 0.9 })
-                            .bindPopup(`<b>CO</b>: ${d.co_value} ppm<br>Node: ${d.node_id}`);
-                        layersPoints.CO.addLayer(coMarker);
-                        layersHeat.CO.addLatLng([d.latitude, d.longitude, normalize(d.co_value, 2)]);
-                    }
-                    // O3
-                    if (d.o3_value != null) {
-                        const o3Marker = L.circleMarker([d.latitude, d.longitude], { radius: 4, fillColor: gasColors.o3, color: '#222', weight: 1, fillOpacity: 0.9 })
-                            .bindPopup(`<b>O3</b>: ${d.o3_value} µg/m³<br>Node: ${d.node_id}`);
-                        layersPoints.O3.addLayer(o3Marker);
-                        layersHeat.O3.addLatLng([d.latitude, d.longitude, normalize(d.o3_value, 100)]);
-                    }
-                    // NO2
-                    if (d.no2_value != null) {
-                        const no2Marker = L.circleMarker([d.latitude, d.longitude], { radius: 4, fillColor: gasColors.no2, color: '#222', weight: 1, fillOpacity: 0.9 })
-                            .bindPopup(`<b>NO2</b>: ${d.no2_value} µg/m³<br>Node: ${d.node_id}`);
-                        layersPoints.NO2.addLayer(no2Marker);
-                        layersHeat.NO2.addLatLng([d.latitude, d.longitude, normalize(d.no2_value, 100)]);
-                    }
-
-                    // CALIDAD AIRE GLOBAL
-                    const coNorm = d.co_value != null ? normalize(d.co_value, 2) : 0;
-                    const o3Norm = d.o3_value != null ? normalize(d.o3_value, 100) : 0;
-                    const no2Norm = d.no2_value != null ? normalize(d.no2_value, 100) : 0;
-                    let maxNorm = Math.max(coNorm, o3Norm, no2Norm);
-
-                    let maxNormMarker = L.circleMarker([d.latitude, d.longitude], { radius: 6, fillColor: getColorByQuality(maxNorm), color: '#fff', weight: 1, fillOpacity: 0.8 })
-                        .bindPopup(`<b>Calidad del Aire</b>: ${calidadAireTexto(maxNorm)}<br>Node: ${d.node_id}`);
-                    layersPoints.AirQuality.addLayer(maxNormMarker);
-
-                    if (maxNorm > 0) {
-                        layersHeat.AirQuality.addLatLng([d.latitude, d.longitude, maxNorm]);
-                    }
-                }
-
-                // Cargar por defecto
-                showLayer("AirQuality");
-            })
-            .catch(err => console.error('Error API:', err));
+init();
     </script>
 </body>
 
