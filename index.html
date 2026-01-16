@@ -56,6 +56,37 @@
         #gas-text strong {
             color: #4B4773;
         }
+
+        /* Añade esto a tu archivo .css */
+        .info.legend {
+            padding: 10px;
+            font: 14px/16px Arial, Helvetica, sans-serif;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            border-radius: 8px;
+            line-height: 20px;
+            color: #333;
+            max-width: 200px;
+        }
+
+        .info.legend i {
+            width: 18px;
+            height: 18px;
+            float: left;
+            margin-right: 10px;
+            opacity: 0.8;
+            border: 1px solid rgba(0,0,0,0.2);
+            border-radius: 3px;
+        }
+
+        .legend-title {
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            font-size: 1.1em;
+        }
     </style>
 </head>
 
@@ -245,6 +276,32 @@
 
     <script>
 // --- 1. CONFIGURACIÓN Y ESTADO ---
+
+const polygonCoords = [
+    [39.01828192335328, -0.18187795194988374],
+    [39.021449424726455, -0.17496858147487737],
+    [38.997231394768725, -0.15589965915302278],
+    [38.99286606556935, -0.16121797354713213],
+    [38.99423380645311, -0.15306735194865262],
+    [38.98673461472112, -0.16113361711015184],
+    [38.97372187479627, -0.17283163718753514],
+    [38.967505533801656, -0.175903844474732],
+    [38.965821209601515, -0.17940931179375955],
+    [38.958715983039326, -0.18122112631332885],
+    [38.96049235645634, -0.19536115740918147],
+    [38.96072175022399, -0.19579010498907135],
+    [38.97249142866205, -0.19639560918830187],
+    [38.97214906582882, -0.18885432964374718],
+    [38.976813619755035, -0.18417543355878388],
+    [38.989949748902866, -0.18692772544770195],
+    [38.99230286960656, -0.18312956274343764],
+    [38.97946671534539, -0.1788910333488238],
+    [38.978791164297505, -0.17469549309674834],
+    [38.991130397499596, -0.16722174888999147],
+    [38.99948758610592, -0.1670379372628237],
+    [39.01828192335328, -0.18187795194988374] 
+];
+
 const gasInfoData = {
     "AirQuality": {
         title: "Calidad del Aire General",
@@ -265,13 +322,17 @@ const gasColors = { "co": "#FF4136", "o3": "#0074D9", "no2": "#2ECC40" };
 
 // --- 2. FUNCIONES DE APOYO (HELPERS) ---
 
-function getColor(val, type) {
-    if (type === 'CO') {
-        return val < 0.5 ? "#00FF00" : val < 1.0 ? "#FFFF00" : val < 2.0 ? "#FFA500" : "#FF0000";
-    }
-    // Escala para O3, NO2 y AirQuality (0-100)
-    return val < 40 ? "#00FF00" : val < 70 ? "#FFFF00" : val < 90 ? "#FFA500" : "#FF0000";
+function getColor(aqi) {
+    console.log("AQI recibido para color:", aqi);
+    if (aqi <= 50)  return "#00E400"; // Bueno (Verde)
+    if (aqi <= 100) return "#FFFF00"; // Moderado (Amarillo)
+    if (aqi <= 150) return "#FF7E00"; // No saludable para sensibles (Naranja)
+    if (aqi <= 200) return "#FF0000"; // No saludable (Rojo)
+    return "#8F3F97"; // Muy poco saludable (Púrpura)
 }
+
+// Y para las Isobandas, los breaks son universales:
+const aqiBreaks = [0, 25, 50, 75, 100, 125, 150, 175, 200, 500];
 
 function normalize(value, maxExpected) { 
     return Math.min(1, parseFloat(value || 0) / maxExpected); 
@@ -281,68 +342,99 @@ function normalize(value, maxExpected) {
 
 function getValidPoints(type) {
     return rawData
-        .filter(d => {
-            const hasCoords = d.latitude != null && d.longitude != null && 
-                              !isNaN(parseFloat(d.latitude)) && !isNaN(parseFloat(d.longitude));
-            if (type === "AirQuality") return hasCoords;
-            return hasCoords && d[`${type.toLowerCase()}_value`] != null;
-        })
+        .filter(d => d.latitude != null && d.longitude != null)
         .map(d => {
-            let val;
+            let aqiValue;
             if (type === "AirQuality") {
-                // Cálculo del índice global (0-100)
-                val = Math.max(
-                    normalize(d.co_value, 2), 
-                    normalize(d.o3_value, 100), 
-                    normalize(d.no2_value, 100)
-                ) * 100;
+                // El AQI general es el peor de los 3
+                const aqiCO = calculateAQI(d.co_value, 'CO');
+                const aqiO3 = calculateAQI(d.o3_value, 'O3');
+                const aqiNO2 = calculateAQI(d.no2_value, 'NO2');
+                aqiValue = Math.max(aqiCO || 0, aqiO3 || 0, aqiNO2 || 0);
             } else {
-                val = parseFloat(d[`${type.toLowerCase()}_value`]);
+                aqiValue = calculateAQI(d[`${type.toLowerCase()}_value`], type);
             }
-            return turf.point([parseFloat(d.longitude), parseFloat(d.latitude)], { val: val });
-        });
+
+            return aqiValue !== null ? turf.point([parseFloat(d.longitude), parseFloat(d.latitude)], { val: aqiValue }) : null;
+        })
+        .filter(p => p !== null);
 }
 
 // --- 4. GENERADOR DE INTERPOLACIÓN ---
 
 function updateMap(type) {
-    // A. Limpieza de capas previas
     if (interpolationLayer) map.removeLayer(interpolationLayer);
     Object.values(layersPoints).forEach(l => map.removeLayer(l));
 
-    // B. Obtener puntos limpios
     const points = getValidPoints(type);
-    if (points.length < 2) {
-        console.warn("Datos insuficientes para interpolar:", type);
-        layersPoints[type].addTo(map); // Mostrar al menos los puntos si existen
-        return;
-    }
+    if (points.length < 5) return; 
 
-    // C. Ejecutar Interpolación IDW
     try {
         const collection = turf.featureCollection(points);
-        const options = { gridType: 'hex', property: 'val', units: 'kilometers', weight: 1.8 };    
+        // Asegúrate de que polygonCoords esté bien definido arriba
+        const gandiaPolygon = turf.polygon([polygonCoords.map(c => [c[1], c[0]])]);
 
-        // cellSize: 0.05 km es ideal para ciudades sin colgar el navegador
-        const grid = turf.interpolate(collection, 0.1, options);
+        const gridPoints = turf.interpolate(collection, 0.07, {
+            gridType: 'points',
+            property: 'val',
+            units: 'kilometers'
+        });
 
-        interpolationLayer = L.geoJson(grid, {
+        const aqiBreaks = [0, 25, 50, 75, 100, 125, 150, 175, 200, 500];
+        const bands = turf.isobands(gridPoints, aqiBreaks, { zProperty: 'val' });
+
+        // PROCESADO SEGURO DE BANDAS
+        const clippedFeatures = [];
+        bands.features.forEach(feature => {
+            try {
+                // Intentamos el intersect. Si falla por versión, probamos el otro método
+                let intersection = null;
+                try {
+                    intersection = turf.intersect(feature, gandiaPolygon);
+                } catch (err) {
+                    // Si falla, intentamos formato v6/v7
+                    intersection = turf.intersect(turf.featureCollection([feature, gandiaPolygon]));
+                }
+
+                if (intersection) {
+                    intersection.properties = feature.properties;
+                    clippedFeatures.push(intersection);
+                }
+            } catch (innerError) {
+                console.warn("No se pudo recortar una banda específica:", innerError);
+            }
+        });
+
+        if (clippedFeatures.length === 0) {
+            console.error("No hay bandas para mostrar después del recorte");
+            return;
+        }
+
+        const clippedBands = {
+            type: "FeatureCollection",
+            features: clippedFeatures
+        };
+
+        interpolationLayer = L.geoJson(clippedBands, {
             style: (feature) => {
+                const valString = feature.properties.val || "0-0";
+                const lowValue = parseFloat(valString.split('-')[0]);
+                
                 return {
-                    fillColor: getColor(feature.properties.val, type),
-                    fillOpacity: 0.7,    // Un poco más opaco para que se vea sólido
-                    weight: 0.0,         // Grosor del borde del cuadrado
-                    color: 'rgba(0,0,0,0.2)', // Color del borde (gris translúcido para ver la rejilla)
-                    // Si no quieres bordes, pon weight: 0
+                    fillColor: getColor(lowValue),
+                    fillOpacity: 0.6,
+                    weight: 0,
+                    color: getColor(lowValue),
+                    smoothFactor: 0
                 };
             }
         }).addTo(map);
 
+
     } catch (e) {
-        console.error("Error en proceso de interpolación:", e);
+        console.error("Error crítico en updateMap:", e);
     }
 }
-
 // --- 5. GESTOR DE UI Y EVENTOS ---
 
 function showLayer(type, btnElement) {
@@ -360,6 +452,60 @@ function showLayer(type, btnElement) {
     document.getElementById('gas-text').innerHTML = info.text;
 }
 
+/**
+ * Calcula el AQI para un contaminante específico
+ * @param {number} val - Valor crudo (concentración)
+ * @param {string} type - 'CO', 'NO2', 'O3'
+ */
+function calculateAQI(val, type) {
+    if (val == null || isNaN(val)) return null;
+
+    const breakpoints = {
+        'CO': [
+            { cpLow: 0.0,  cpHigh: 4.4,  aqLow: 0,   aqHigh: 50 },
+            { cpLow: 4.5,  cpHigh: 9.4,  aqLow: 51,  aqHigh: 100 },
+            { cpLow: 9.5,  cpHigh: 12.4, aqLow: 101, aqHigh: 150 },
+            { cpLow: 12.5, cpHigh: 15.4, aqLow: 151, aqHigh: 200 },
+            { cpLow: 15.5, cpHigh: 30.4, aqLow: 201, aqHigh: 300 },
+            { cpLow: 30.5, cpHigh: 50.4, aqLow: 301, aqHigh: 500 }
+        ],
+        'NO2': [
+            { cpLow: 0,   cpHigh: 53,  aqLow: 0,   aqHigh: 50 },
+            { cpLow: 54,  cpHigh: 100, aqLow: 51,  aqHigh: 100 },
+            { cpLow: 101, cpHigh: 360, aqLow: 101, aqHigh: 150 },
+            { cpLow: 361, cpHigh: 649, aqLow: 151, aqHigh: 200 },
+            { cpLow: 650, cpHigh: 1249, aqLow: 201, aqHigh: 300 },
+            { cpLow: 1250, cpHigh: 2049, aqLow: 301, aqHigh: 500 }
+        ],
+        'O3': [
+            { cpLow: 0,   cpHigh: 54,  aqLow: 0,   aqHigh: 50 },
+            { cpLow: 55,  cpHigh: 70,  aqLow: 51,  aqHigh: 100 },
+            { cpLow: 71,  cpHigh: 85,  aqLow: 101, aqHigh: 150 },
+            { cpLow: 86,  cpHigh: 105, aqLow: 151, aqHigh: 200 },
+            { cpLow: 106, cpHigh: 200, aqLow: 201, aqHigh: 300 },
+            { cpLow: 201, cpHigh: 600, aqLow: 301, aqHigh: 500 }
+        ]
+    };
+
+    const table = breakpoints[type];
+    if (!table) return val;
+
+    // Buscamos el rango. Nota: Usamos una pequeña tolerancia para los huecos (ej 4.41)
+    const range = table.find(r => val >= r.cpLow && val <= r.cpHigh);
+    
+    if (!range) {
+        // Si el valor es más bajo que el mínimo, devolvemos 0
+        if (val < table[0].cpLow) return 0;
+        // Si el valor supera el máximo de la tabla (AQI > 500)
+        return 500; 
+    }
+
+    // Fórmula oficial de interpolación lineal AQI
+    const aqi = ((range.aqHigh - range.aqLow) / (range.cpHigh - range.cpLow)) * (val - range.cpLow) + range.aqLow;
+    
+    return Math.round(aqi);
+}
+
 // --- 6. CARGA INICIAL (FETCHER) ---
 
 async function init() {
@@ -368,33 +514,84 @@ async function init() {
         const data = await response.json();
         rawData = data.measurements || [];
 
-        if (rawData.length === 0) return console.error("Snapshot vacío");
+        if (rawData.length === 0) return;
 
-        // Pre-cargar los LayerGroups de puntos reales
         rawData.forEach(d => {
             const lat = parseFloat(d.latitude);
             const lng = parseFloat(d.longitude);
             if (isNaN(lat) || isNaN(lng)) return;
 
-            if (d.co_value != null) {
-                layersPoints.CO.addLayer(L.circleMarker([lat, lng], { radius: 4, fillColor: gasColors.co, color: '#000', weight: 1, fillOpacity: 1 }));
-            }
-            if (d.o3_value != null) {
-                layersPoints.O3.addLayer(L.circleMarker([lat, lng], { radius: 4, fillColor: gasColors.o3, color: '#000', weight: 1, fillOpacity: 1 }));
-            }
-            if (d.no2_value != null) {
-                layersPoints.NO2.addLayer(L.circleMarker([lat, lng], { radius: 4, fillColor: gasColors.no2, color: '#000', weight: 1, fillOpacity: 1 }));
-            }
-            // AirQuality usa círculos blancos con borde del color de calidad
-            const aqVal = Math.max(normalize(d.co_value, 2), normalize(d.o3_value, 100), normalize(d.no2_value, 100)) * 100;
-            layersPoints.AirQuality.addLayer(L.circleMarker([lat, lng], { radius: 5, fillColor: '#FFF', color: getColor(aqVal, 'AirQuality'), weight: 3, fillOpacity: 1 }));
+            // Marcadores para gases individuales
+            if (d.co_value != null) layersPoints.CO.addLayer(createMarker(lat, lng, gasColors.co));
+            if (d.o3_value != null) layersPoints.O3.addLayer(createMarker(lat, lng, gasColors.o3));
+            if (d.no2_value != null) layersPoints.NO2.addLayer(createMarker(lat, lng, gasColors.no2));
+
+            // Marcador para AirQuality (Usando el mismo AQI de la interpolación)
+            const aqiCO = calculateAQI(d.co_value, 'CO') || 0;
+            const aqiO3 = calculateAQI(d.o3_value, 'O3') || 0;
+            const aqiNO2 = calculateAQI(d.no2_value, 'NO2') || 0;
+            const maxAQI = Math.max(aqiCO, aqiO3, aqiNO2);
+
+            layersPoints.AirQuality.addLayer(L.circleMarker([lat, lng], { 
+                radius: 5, 
+                fillColor: '#FFF', 
+                color: getColor(maxAQI), 
+                weight: 3, 
+                fillOpacity: 1 
+            }));
         });
 
         showLayer("AirQuality");
+        addLegend(); // Añadir si la tienes definida
 
     } catch (err) {
-        console.error("Error cargando el snapshot:", err);
+        console.error("Error inicial:", err);
     }
+
+    
+}
+
+function createMarker(lat, lng, color) {
+    return L.circleMarker([lat, lng], { radius: 4, fillColor: color, color: '#000', weight: 1, fillOpacity: 1 });
+}
+
+function addLegend() {
+    // Si ya existe una leyenda, no la duplicamos
+    if (window.mapLegend) {
+        window.mapLegend.remove();
+    }
+
+    const legend = L.control({ position: 'bottomright' });
+
+    legend.onAdd = function (map) {
+        const div = L.DomUtil.create('div', 'info legend');
+        
+        // Los cortes coinciden con tus colores y lógica de AQI
+        const grades = [0, 51, 101, 151];
+        const labels = [
+            "Bueno", 
+            "Moderado", 
+            "Sensible", 
+            "Insalubre"
+        ];
+
+        div.innerHTML = '<div class="legend-title">Índice AQI</div>';
+
+        // Generamos los items de la leyenda
+        for (let i = 0; i < grades.length; i++) {
+            const color = getColor(grades[i]);
+            const nextGrade = grades[i + 1];
+            
+            div.innerHTML +=
+                '<i style="background:' + color + '"></i> ' +
+                 labels[i] + '<br>';
+        }
+
+        return div;
+    };
+
+    legend.addTo(map);
+    window.mapLegend = legend; // Guardamos referencia para poder refrescarla si hace falta
 }
 
 init();
